@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebarbora</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .main-title {
+            font-size: 7rem;
+            color: #2c3e50;
+            margin: 3rem 0;
+            text-align: center;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.8s ease;
+        }
+
+        .main-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            transition: all 0.8s ease;
+        }
+
+        .main-nav-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 45px 90px;
+            font-size: 2.2rem;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: all 0.8s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .main-nav-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        #competitions, #seminars, #projects {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .filter-section {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        .filter-section select {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            background-color: white;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 160px;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        .filter-section select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .filter-section select:hover {
+            border-color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-section select {
+                width: 100%;
+            }
+        }
+
+        #competitions-list, #seminars-list, #projects-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .card-main-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-main-info p {
+            margin: 0;
+            color: #34495e;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .card-main-info strong {
+            color: #2c3e50;
+            min-width: 80px;
+            display: inline-block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+
+        .modal-info p {
+            margin: 12px 0;
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+
+        .modal .close {
+            position: absolute;
+            right: 25px;
+            top: 20px;
+            color: #95a5a6;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal .close:hover {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 20% auto;
+                padding: 30px;
+                width: 95%;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+                padding-right: 30px;
+            }
+        }
+
+        .initial-state {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .main-title {
+            font-size: 7rem;
+            transition: all 1s ease;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-title.slide-up {
+            font-size: 0;
+            opacity: 0;
+            transform: translateY(-100px);
+        }
+
+        .main-navigation {
+            transition: all 1s ease;
+            margin: 50px 0;
+        }
+
+        .main-navigation.initial {
+            margin: 0;
+        }
+
+        .main-nav-button.initial {
+            padding: 45px 90px;
+            font-size: 2.2rem;
+        }
+
+        .main-nav-button {
+            transition: all 1s ease;
+        }
+
+        .section-header {
+            width: 100%;
+            height: 200px;  /* Adjust height as needed */
+            margin-bottom: 30px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #competitions .section-header {
+            background-image: url('path/to/competitions-image.jpg');
+        }
+
+        #seminars .section-header {
+            background-image: url('path/to/seminars-image.jpg');
+        }
+
+        #projects .section-header {
+            background-image: url('path/to/projects-image.jpg');
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0 30px 0;
+        }
+
+        .view-btn {
+            background-color: #3498db;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+            opacity: 0.7;
+        }
+
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .view-btn.active {
+            opacity: 1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .calendar-view {
+            display: none;
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            background: none;
+            color: #3498db;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .calendar-view {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            padding: 25px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            background-color: white;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .calendar-header h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .month-nav {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .month-nav:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .weekday {
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .calendar-day {
+            min-height: 120px;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .calendar-day.empty {
+            background-color: #f8f9fa;
+            border: none;
+        }
+
+        .calendar-day.has-event {
+            background-color: #ebf5fb;
+            border: 1px solid #bde0f3;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #3498db;
+            background-color: #f7fbfe;
+        }
+
+        .calendar-day.past {
+            background-color: #f8f9fa;
+            color: #95a5a6;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .calendar-event {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .calendar-event:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .suggestion-btn {
+            position: fixed;
+            top: 120px;
+            right: 30px;
+            background-color: white;
+            border: 2px solid #27ae60;
+            color: #27ae60;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            border-radius: 50px;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 2px 10px rgba(39, 174, 96, 0.1);
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(200px);
+            transition: all 1s ease;
+        }
+
+        .suggestion-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .suggestion-btn:hover {
+            background-color: #27ae60;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .suggestion-btn {
+                top: 100px;
+                right: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        #suggestionModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        #suggestionModal .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            text-align: center;
+        }
+
+        #suggestionModal h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        #suggestionModal .email-text {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        #suggestionModal .email-link {
+            display: block;
+            color: #27ae60;
+            font-size: 1.3rem;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        #suggestionModal .email-link:hover {
+            color: #219a52;
+        }
+
+        #suggestionModal .close-suggestion {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            font-size: 24px;
+            color: #95a5a6;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        #suggestionModal .close-suggestion:hover {
+            color: #2c3e50;
+        }
+
+        .email-text {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .email-link {
+            color: #27ae60;
+            text-decoration: none;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        #competitions-calendar,
+        #seminars-calendar,
+        #projects-calendar {
+            display: none;
+            padding: 20px;
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .view-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            color: #2c3e50;
+        }
+
+        .view-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .view-btn.active {
+            background-color: #3498db;
+            border-color: #3498db;
+            color: white;
+        }
+
+        .reset-filters-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+        }
+
+        .reset-filters-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .reset-filters-btn i {
+            font-size: 0.9rem;
+        }
+
+        /* Update filter section to accommodate the reset button */
+        .filter-section {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            align-items: stretch; /* This ensures all items have the same height */
+        }
+    </style>
+</head>
+<body>
+    <h1 class="main-title">Rebarbora</h1>
+    
+    <div class="main-navigation">
+        <button class="main-nav-button" onclick="showSection('competitions')">Soutěže</button>
+        <button class="main-nav-button" onclick="showSection('seminars')">Semináře</button>
+        <button class="main-nav-button" onclick="showSection('projects')">Projekty</button>
+    </div>
+
+    <button id="suggestionButton" class="suggestion-btn" onclick="showSuggestionModal()" style="display: none;">
+        Víte o něčem co nám tu chybí?
+    </button>
+
+    <!-- Competitions Section -->
+    <div id="competitions">
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="toggleView('competitions', 'grid')">Seznam</button>
+            <button class="view-btn" onclick="toggleView('competitions', 'calendar')">Kalendář</button>
+        </div>
+        <div class="filter-section">
+            <select id="competitions-yearFilter">
+                <option value="">Rok narození</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+            </select>
+
+            <select id="competitions-classFilter">
+                <option value="">Třída</option>
+                <option value="3">3. třída</option>
+                <option value="4">4. třída</option>
+                <option value="5">5. třída</option>
+                <option value="6">6. třída</option>
+                <option value="7">7. třída</option>
+                <option value="8">8. třída</option>
+                <option value="9">9. třída</option>
+                <option value="10">10. třída</option>
+                <option value="11">11. třída</option>
+                <option value="12">12. třída</option>
+                <option value="13">13. třída</option>
+            </select>
+
+            <select id="competitions-teamFilter">
+                <option value="">Typ účasti</option>
+                <option value="individual">Jednotlivec</option>
+                <option value="team">Tým</option>
+            </select>
+
+            <select id="competitions-locationFilter">
+                <option value="">Místo konání</option>
+                <option value="praha">Praha</option>
+                <option value="brno">Brno</option>
+                <option value="online">Online</option>
+            </select>
+
+            <select id="competitions-subjectFilter">
+                <option value="">Předmět</option>
+                <option value="math">Matematika</option>
+                <option value="physics">Fyzika</option>
+                <option value="chemistry">Chemie</option>
+                <option value="biology">Biologie</option>
+                <option value="programming">Programování</option>
+                <option value="other">Ostatní</option>
+            </select>
+
+            <button class="reset-filters-btn" onclick="resetFilters('competitions')">
+                <i class="fas fa-undo"></i> Reset filtrů
+            </button>
+        </div>
+        <div id="competitions-list"></div>
+        <div id="competitions-calendar" style="display: none;"></div>
+        <button class="suggestion-btn" onclick="showSuggestionModal()" style="display: none;">
+            Víte o něčem co nám tu chybí?
+        </button>
+    </div>
+
+    <!-- Seminars Section -->
+    <div id="seminars">
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="toggleView('seminars', 'grid')">Seznam</button>
+            <button class="view-btn" onclick="toggleView('seminars', 'calendar')">Kalendář</button>
+        </div>
+        <div class="filter-section">
+            <select id="seminars-yearFilter">
+                <option value="">Rok narození</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+            </select>
+
+            <select id="seminars-classFilter">
+                <option value="">Třída</option>
+                <option value="3">3. třída</option>
+                <option value="4">4. třída</option>
+                <option value="5">5. třída</option>
+                <option value="6">6. třída</option>
+                <option value="7">7. třída</option>
+                <option value="8">8. třída</option>
+                <option value="9">9. třída</option>
+            </select>
+
+            <select id="seminars-teamFilter">
+                <option value="">Typ účasti</option>
+                <option value="individual">Jednotlivec</option>
+                <option value="team">Tým</option>
+            </select>
+
+            <select id="seminars-locationFilter">
+                <option value="">Místo konání</option>
+                <option value="praha">Praha</option>
+                <option value="brno">Brno</option>
+                <option value="online">Online</option>
+            </select>
+
+            <select id="seminars-subjectFilter">
+                <option value="">Předmět</option>
+                <option value="math">Matematika</option>
+                <option value="physics">Fyzika</option>
+                <option value="chemistry">Chemie</option>
+                <option value="biology">Biologie</option>
+                <option value="programming">Programování</option>
+                <option value="other">Ostatní</option>
+            </select>
+
+            <button class="reset-filters-btn" onclick="resetFilters('seminars')">
+                <i class="fas fa-undo"></i> Reset filtrů
+            </button>
+        </div>
+        <div id="seminars-list"></div>
+        <div id="seminars-calendar" style="display: none;"></div>
+        <button class="suggestion-btn" onclick="showSuggestionModal()" style="display: none;">
+            Víte o něčem co nám tu chybí?
+        </button>
+    </div>
+
+    <!-- Projects Section -->
+    <div id="projects">
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="toggleView('projects', 'grid')">Seznam</button>
+            <button class="view-btn" onclick="toggleView('projects', 'calendar')">Kalendář</button>
+        </div>
+        <div class="filter-section">
+            <select id="projects-yearFilter">
+                <option value="">Rok narození</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+            </select>
+
+            <select id="projects-classFilter">
+                <option value="">Třída</option>
+                <option value="3">3. třída</option>
+                <option value="4">4. třída</option>
+                <option value="5">5. třída</option>
+                <option value="6">6. třída</option>
+                <option value="7">7. třída</option>
+                <option value="8">8. třda</option>
+                <option value="9">9. třída</option>
+                <option value="10">10. třída</option>
+                <option value="11">11. třída</option>
+                <option value="12">12. třída</option>
+                <option value="13">13. třída</option>
+            </select>
+
+            <select id="projects-teamFilter">
+                <option value="">Typ časti</option>
+                <option value="individual">Jednotlivec</option>
+                <option value="team">Tým</option>
+            </select>
+
+            <select id="projects-locationFilter">
+                <option value="">Místo konání</option>
+                <option value="praha">Praha</option>
+                <option value="brno">Brno</option>
+                <option value="online">Online</option>
+            </select>
+
+            <select id="projects-subjectFilter">
+                <option value="">Předmět</option>
+                <option value="math">Matematika</option>
+                <option value="physics">Fyzika</option>
+                <option value="chemistry">Chemie</option>
+                <option value="biology">Biologie</option>
+                <option value="programming">Programování</option>
+                <option value="other">Ostatní</option>
+            </select>
+
+            <button class="reset-filters-btn" onclick="resetFilters('projects')">
+                <i class="fas fa-undo"></i> Reset filtrů
+            </button>
+        </div>
+        <div id="projects-list"></div>
+        <div id="projects-calendar" style="display: none;"></div>
+        <button class="suggestion-btn" onclick="showSuggestionModal()" style="display: none;">
+            Víte o něčem co nám tu chybí?
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div id="detailModal" class="modal">
+        <div id="modalContent" class="modal-content">
+        </div>
+    </div>
+
+    <div id="suggestionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-suggestion" id="closeSuggestionBtn">&times;</span>
+            <h2>Máte nápad na vylepšení?</h2>
+            <p class="email-text">Napište nám na:</p>
+            <a href="mailto:matejjotrejtnar@gmail.com" class="email-link">matejjotrejtnar@gmail.com</a>
+        </div>
+    </div>
+
+    <footer>
+        <button class="suggestion-btn" onclick="showSuggestionModal()">Víte o něčem co nám tu chybí?</button>
+    </footer>
+
+    <script>
+        // Add these global variables at the start of your JavaScript
+        window.allCompetitions = [];
+        window.allSeminars = [];
+        window.allProjects = [];
+        window.currentDate = new Date();
+
+        // Function to show/hide sections
+        function showSection(sectionId) {
+            // Slide up and hide the title
+            const title = document.querySelector('.main-title');
+            title.style.fontSize = '0';
+            title.style.opacity = '0';
+            title.style.margin = '0';
+
+            // Shrink the buttons and move them up
+            const buttons = document.querySelectorAll('.main-nav-button');
+            buttons.forEach(button => {
+                button.style.padding = '35px 70px';
+                button.style.fontSize = '1.8rem';
+            });
+
+            const navigation = document.querySelector('.main-navigation');
+            navigation.style.margin = '20px 0';
+
+            // Hide all sections
+            document.getElementById('competitions').style.display = 'none';
+            document.getElementById('seminars').style.display = 'none';
+            document.getElementById('projects').style.display = 'none';
+
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+
+            // Show suggestion button
+            const suggestionBtn = document.getElementById('suggestionButton');
+            suggestionBtn.style.display = 'block';
+            setTimeout(() => {
+                suggestionBtn.classList.add('show');
+            }, 10);
+
+            // Render items for the selected section
+            renderItems(sectionId);
+        }
+
+        // Parse CSV function
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n');
+            const headers = lines[0].split(';').map(header => header.trim());
+            
+            return lines.slice(1)
+                .filter(line => line.trim()) // Remove empty lines
+                .map(line => {
+                    const values = line.split(';').map(value => value.trim());
+                    const item = {};
+                    headers.forEach((header, index) => {
+                        item[header] = values[index];
+                    });
+                    return item;
+                });
+        }
+
+        // Load data function
+        async function loadData() {
+            try {
+                // Load all three CSV files
+                const [competitionsData, seminarsData, projectsData] = await Promise.all([
+                    fetch('competitions.csv')
+                        .then(response => {
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            return response.text();
+                        }),
+                    fetch('seminars.csv')
+                        .then(response => {
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            return response.text();
+                        }),
+                    fetch('projects.csv')
+                        .then(response => {
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            return response.text();
+                        })
+                ]);
+
+                // Parse all three CSV files
+                window.allCompetitions = parseCSV(competitionsData);
+                window.allSeminars = parseCSV(seminarsData);
+                window.allProjects = parseCSV(projectsData);
+
+                console.log('Loaded competitions:', window.allCompetitions);
+                console.log('Loaded seminars:', window.allSeminars);
+                console.log('Loaded projects:', window.allProjects);
+
+                // Initial render
+                renderItems('competitions');
+            } catch (error) {
+                console.error('Error loading CSV files:', error);
+                // Initialize empty arrays if loading fails
+                window.allCompetitions = [];
+                window.allSeminars = [];
+                window.allProjects = [];
+                renderItems('competitions');
+            }
+        }
+
+        // Setup filters function
+        function setupFilters(competitions, seminars, projects) {
+            const competitionSubjects = new Set(competitions.map(comp => comp.subject));
+            const seminarSubjects = new Set(seminars.map(sem => sem.subject));
+            const projectFields = new Set(projects.map(proj => proj.field));
+
+            const compFilter = document.getElementById('subjectFilter');
+            const semFilter = document.getElementById('seminarSubjectFilter');
+            const projFilter = document.getElementById('projectFilter');
+
+            competitionSubjects.forEach(subject => {
+                if (subject) {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    compFilter.appendChild(option);
+                }
+            });
+
+            seminarSubjects.forEach(subject => {
+                if (subject) {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    semFilter.appendChild(option);
+                }
+            });
+
+            projectFields.forEach(field => {
+                if (field) {
+                    const option = document.createElement('option');
+                    option.value = field;
+                    option.textContent = field;
+                    projFilter.appendChild(option);
+                }
+            });
+        }
+
+        // Filter functions
+        function filterCompetitions() {
+            const selectedSubject = document.getElementById('subjectFilter').value;
+            const filteredCompetitions = selectedSubject === 'all' 
+                ? window.allCompetitions 
+                : window.allCompetitions.filter(comp => comp.subject === selectedSubject);
+            displayCompetitions(filteredCompetitions);
+        }
+
+        function filterSeminars() {
+            const selectedSubject = document.getElementById('seminarSubjectFilter').value;
+            const filteredSeminars = selectedSubject === 'all' 
+                ? window.allSeminars 
+                : window.allSeminars.filter(sem => sem.subject === selectedSubject);
+            displaySeminars(filteredSeminars);
+        }
+
+        function filterProjects() {
+            const selectedField = document.getElementById('projectFilter').value;
+            const filteredProjects = selectedField === 'all' 
+                ? window.allProjects 
+                : window.allProjects.filter(proj => proj.field === selectedField);
+            displayProjects(filteredProjects);
+        }
+
+        // Display functions
+        function displayCompetitions(competitions) {
+            document.getElementById('competitions-list').innerHTML = 
+                competitions.map(createCompetitionCard).join('');
+        }
+
+        function displaySeminars(seminars) {
+            document.getElementById('seminars-list').innerHTML = 
+                seminars.map(createSeminarCard).join('');
+        }
+
+        function displayProjects(projects) {
+            document.getElementById('projects-list').innerHTML = 
+                projects.map(createProjectCard).join('');
+        }
+
+        // Card creation functions
+        function createCompetitionCard(competition) {
+            return `
+                <div class="card" onclick='showModal("competition", ${JSON.stringify(competition)})'>
+                    <h3>${competition.title || 'No Title'}</h3>
+                    <p><strong>Date:</strong> ${competition.date || 'N/A'}</p>
+                    <p><strong>Age Group:</strong> ${competition.ageGroup || 'N/A'}</p>
+                    <p><strong>Location:</strong> ${competition.location || 'N/A'}</p>
+                </div>
+            `;
+        }
+
+        function createSeminarCard(seminar) {
+            return `
+                <div class="card" onclick='showModal("seminar", ${JSON.stringify(seminar)})'>
+                    <h3>${seminar.title || 'No Title'}</h3>
+                    <p><strong>Date:</strong> ${seminar.date || 'N/A'}</p>
+                    <p><strong>Age Group:</strong> ${seminar.ageGroup || 'N/A'}</p>
+                    <p><strong>Location:</strong> ${seminar.location || 'N/A'}</p>
+                </div>
+            `;
+        }
+
+        function createProjectCard(project) {
+            return `
+                <div class="card" onclick='showModal("project", ${JSON.stringify(project)})'>
+                    <h3>${project.title || 'No Title'}</h3>
+                    <p><strong>Date:</strong> ${project.date || 'N/A'}</p>
+                    <p><strong>Age Group:</strong> ${project.ageGroup || 'N/A'}</p>
+                    <p><strong>Location:</strong> ${project.location || 'N/A'}</p>
+                </div>
+            `;
+        }
+
+        // Modal functions
+        function showModal(type, item) {
+            console.log('Opening modal for:', item); // Debug log
+            const modal = document.getElementById('detailModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            if (!modal || !modalContent) {
+                console.error('Modal elements not found!');
+                return;
+            }
+            
+            let content = `
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 class="modal-title">${item.title}</h2>
+                <div class="modal-info">
+                    <p><strong>Popis:</strong> ${item.description}</p>
+                    <p><strong>Datum:</strong> ${item.date}</p>
+                    <p><strong>Ročník:</strong> ${item.class}. třída</p>
+                    <p><strong>Pro rok narození:</strong> ${item.yearBorn}</p>
+                    <p><strong>Typ účasti:</strong> ${item.type === 'individual' ? 'Jednotlivec' : 'Tým'}</p>
+                    <p><strong>Místo konání:</strong> ${item.location}</p>
+                    <p><strong>Předmět:</strong> ${item.subject}</p>
+                </div>
+            `;
+            
+            modalContent.innerHTML = content;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            if (modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Apply function
+        function apply(type, title) {
+            alert(`Applied to ${title}!`);
+        }
+
+        // Modal event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+
+            // Add initial classes
+            document.querySelector('.main-title')?.classList.add('initial');
+            document.querySelector('.main-navigation')?.classList.add('initial');
+            document.querySelectorAll('.main-nav-button').forEach(button => {
+                button.classList.add('initial');
+            });
+
+            // Handle modal clicks through event delegation
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('close')) {
+                    const modal = event.target.closest('.modal');
+                    if (modal) {
+                        modal.style.display = "none";
+                    }
+                }
+                
+                // Close modal when clicking outside
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = "none";
+                }
+            });
+        });
+
+        function toggleView(section, viewType) {
+            const gridView = document.getElementById(`${section}-list`);
+            const calendarView = document.getElementById(`${section}-calendar`);
+            const buttons = document.querySelector(`#${section} .view-toggle`).children;
+            
+            if (viewType === 'grid') {
+                gridView.style.display = 'grid';
+                calendarView.style.display = 'none';
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+            } else {
+                gridView.style.display = 'none';
+                calendarView.style.display = 'block';
+                buttons[0].classList.remove('active');
+                buttons[1].classList.add('active');
+                
+                // Reset to current date every time calendar is opened
+                window.currentDate = new Date();
+                renderCalendar(section);
+            }
+        }
+
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+
+        function renderCalendar(section) {
+            const calendar = document.getElementById(`${section}-calendar`);
+            const year = window.currentDate.getFullYear();
+            const month = window.currentDate.getMonth();
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDay = firstDay.getDay();
+            
+            let events;
+            if (section === 'competitions') events = window.allCompetitions;
+            else if (section === 'seminars') events = window.allSeminars;
+            else events = window.allProjects;
+            
+            let calendarHTML = `
+                <div class="calendar-header">
+                    <button class="month-nav" onclick="changeMonth('${section}', -1)">←</button>
+                    <h3>${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}</h3>
+                    <button class="month-nav" onclick="changeMonth('${section}', 1)">→</button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="weekday">Ne</div>
+                    <div class="weekday">Po</div>
+                    <div class="weekday">Út</div>
+                    <div class="weekday">St</div>
+                    <div class="weekday">Čt</div>
+                    <div class="weekday">Pá</div>
+                    <div class="weekday">So</div>
+            `;
+            
+            // Add empty cells for days before start of month
+            for (let i = 0; i < startingDay; i++) {
+                calendarHTML += '<div class="calendar-day empty"></div>';
+            }
+            
+            // Add days with events
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const currentDate = new Date(year, month, day);
+                const dateString = formatDate(currentDate);
+                const dayEvents = events.filter(event => event.date === dateString);
+                const isToday = today.toDateString() === currentDate.toDateString();
+                const isPast = currentDate < today && !isToday;
+                
+                calendarHTML += `
+                    <div class="calendar-day ${dayEvents.length ? 'has-event' : ''} ${isToday ? 'today' : ''} ${isPast ? 'past' : ''}">
+                        <div class="day-number">${day}</div>
+                        ${dayEvents.map(event => `
+                            <div class="calendar-event" onclick='showModal("${section.slice(0, -1)}", ${JSON.stringify(event).replace(/'/g, "\\'")})'>${event.title}</div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            calendarHTML += '</div>';
+            calendar.innerHTML = calendarHTML;
+        }
+
+        function changeMonth(section, delta) {
+            window.currentDate.setMonth(window.currentDate.getMonth() + delta);
+            renderCalendar(section);
+        }
+
+        function showSuggestionModal() {
+            const modal = document.getElementById('suggestionModal');
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.querySelector('.modal-content').style.opacity = '1';
+                modal.querySelector('.modal-content').style.transform = 'translateY(0)';
+            }, 10);
+        }
+
+        function closeSuggestionModal() {
+            const modal = document.getElementById('suggestionModal');
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.opacity = '0';
+            modalContent.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Add this event listener for clicking outside the modal
+        document.addEventListener('DOMContentLoaded', function() {
+            const suggestionModal = document.getElementById('suggestionModal');
+            const closeSuggestionBtn = document.getElementById('closeSuggestionBtn');
+            
+            // Show modal
+            window.showSuggestionModal = function() {
+                suggestionModal.style.display = 'block';
+            }
+            
+            // Close modal when clicking X
+            closeSuggestionBtn.addEventListener('click', function() {
+                suggestionModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                if (event.target == suggestionModal) {
+                    suggestionModal.style.display = 'none';
+                }
+            }
+        });
+
+        function renderItems(section) {
+            const container = document.getElementById(`${section}-list`);
+            let items;
+            
+            // Select the correct data array based on section
+            if (section === 'competitions') {
+                items = window.allCompetitions;
+            } else if (section === 'seminars') {
+                items = window.allSeminars;
+            } else if (section === 'projects') {
+                items = window.allProjects;
+            }
+
+            // Get filter values using section-specific IDs
+            const yearFilter = document.getElementById(`${section}-yearFilter`)?.value || '';
+            const classFilter = document.getElementById(`${section}-classFilter`)?.value || '';
+            const teamFilter = document.getElementById(`${section}-teamFilter`)?.value || '';
+            const locationFilter = document.getElementById(`${section}-locationFilter`)?.value || '';
+            const subjectFilter = document.getElementById(`${section}-subjectFilter`)?.value || '';
+
+            // Apply filters
+            const filteredItems = items.filter(item => {
+                const yearMatch = !yearFilter || item.yearBorn.toString() === yearFilter;
+                const classMatch = !classFilter || item.class.toString() === classFilter;
+                const teamMatch = !teamFilter || item.type === teamFilter;
+                const locationMatch = !locationFilter || item.location.toLowerCase() === locationFilter.toLowerCase();
+                const subjectMatch = !subjectFilter || item.subject.toLowerCase() === subjectFilter.toLowerCase();
+
+                return yearMatch && classMatch && teamMatch && locationMatch && subjectMatch;
+            });
+
+            // Generate HTML for filtered items
+            const html = filteredItems.map(item => {
+                // Determine whether to show class or year or both
+                let gradeInfo = '';
+                if (item.class && item.yearBorn) {
+                    gradeInfo = `<p><strong>Třída:</strong> ${item.class}. třída</p>`;
+                } else if (item.class) {
+                    gradeInfo = `<p><strong>Třída:</strong> ${item.class}. třída</p>`;
+                } else if (item.yearBorn) {
+                    gradeInfo = `<p><strong>Ročník:</strong> ${item.yearBorn}</p>`;
+                }
+
+                return `
+                    <div class="card" data-item='${JSON.stringify(item).replace(/'/g, "&apos;")}'>
+                        <h3>${item.title}</h3>
+                        <div class="card-main-info">
+                            <p><strong>Popis:</strong> ${item.description}</p>
+                            <p><strong>Datum:</strong> ${item.date}</p>
+                            <p><strong>Místo:</strong> ${item.location}</p>
+                            <p><strong>Předmět:</strong> ${item.subject}</p>
+                            ${gradeInfo}
+                            <p><strong>Typ:</strong> ${item.type === 'individual' ? 'Jednotlivec' : 'Tým'}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+
+            // Add click event listeners
+            container.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const item = JSON.parse(this.dataset.item);
+                    showModal(section.slice(0, -1), item);
+                });
+            });
+        }
+
+        // Add event listeners for filters
+        document.addEventListener('DOMContentLoaded', function() {
+            ['competitions', 'seminars', 'projects'].forEach(section => {
+                const filters = [
+                    `${section}-yearFilter`,
+                    `${section}-classFilter`,
+                    `${section}-teamFilter`,
+                    `${section}-locationFilter`,
+                    `${section}-subjectFilter`
+                ];
+                
+                filters.forEach(filterId => {
+                    const filter = document.getElementById(filterId);
+                    if (filter) {
+                        filter.addEventListener('change', () => {
+                            if (document.getElementById(section).style.display === 'block') {
+                                renderItems(section);
+                            }
+                        });
+                    }
+                });
+            });
+            
+            loadData();
+        });
+
+        // Test CSV loading
+        fetch('competitions.csv')
+            .then(response => response.text())
+            .then(data => {
+                console.log('CSV content:', data);
+            })
+            .catch(error => {
+                console.error('Error loading CSV:', error);
+            });
+
+        function resetFilters(section) {
+            // Get all filters for the section
+            const filters = [
+                document.getElementById(`${section}-yearFilter`),
+                document.getElementById(`${section}-classFilter`),
+                document.getElementById(`${section}-teamFilter`),
+                document.getElementById(`${section}-locationFilter`),
+                document.getElementById(`${section}-subjectFilter`)
+            ];
+
+            // Reset each filter to default value
+            filters.forEach(filter => {
+                if (filter) {
+                    filter.value = '';
+                }
+            });
+
+            // Re-render the items
+            renderItems(section);
+
+            // Add a small animation to the reset button
+            const resetBtn = document.querySelector(`#${section} .reset-filters-btn`);
+            if (resetBtn) {
+                resetBtn.style.transform = 'rotate(360deg)';
+                setTimeout(() => {
+                    resetBtn.style.transform = 'none';
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
