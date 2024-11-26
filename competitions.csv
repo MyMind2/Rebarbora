@@ -1,2 +1,6 @@
-title;kratkyPopis;prvniKoloNazev;prvniKoloDatum;druheKoloNazev;druheKoloDatum;tretiKoloNazev;tretiKoloDatum;ctvrteKoloNazev;ctvrteKoloDatum;pateKoloNazev;pateKoloDatum;location;rocnikMin;rocnikMax;tridaMin;tridaMax;delsiPopis;link;subject;cena;type
-Matematická olympiáda;Matematická soutěž pro nadané studenty;Školní kolo;01.01.2025;Okresní kolo;15.10.2024;Krajské kolo;20.11.2024;;;;;Praha;2007;2010;;;Matematika;;;;Individual
+title;shortDescription;longDescription;firstDateName;firstDate;secondDateName;secondDate;thirdDateName;thirdDate;fourthDateName;fourthDate;fifthDateName;fifthDate;yearBornMin;yearBornMax;classMin;classMax;Link;Location;Type;Cena;Subject
+Matematická olympiáda kategorie A;Matematická olympiáda pro střední školy 2024/2025;Matematická olympiáda pro střední školy 2024/2025 blah;Domácí kolo je do;03.12.2024;;;;;;;;;;;9;13;https://www.matematickaolympiada.cz/;Všude;individual;Pocit;Matematika
+Matematická olympiáda kategorie B;Matematická olympiáda pro střední školy 2024/2025;Matematická olympiáda pro střední školy 2024/2025 blah;Domácí kolo je do;21.01.2025;;;;;;;;;;;9;9;https://www.matematickaolympiada.cz/;Všude;individual;Pocit;Matematika
+Matematická olympiáda kategorie C;Matematická olympiáda pro střední školy 2024/2025;Matematická olympiáda pro střední školy 2024/2025 blah;Domácí kolo je do;21.01.2025;;;;;;;;;;;11;11;https://www.matematickaolympiada.cz/;Všude;individual;Pocit;Matematika
+Programovací soutěž;Týmová soutěž v programování;Týmová soutěž v programování blah;Hlavní kolo;25.04.2025;;;;;;;;;2009;2010;;;;Praha;team;Peníze;Fyzika
+Chemická olympiáda;Soutěž pro mladé chemiky;Soutěž pro mladé chemiky blah;První kolo;12.03.2025;Druhé kolo;15.03.2025;;;;;;;2010;2012;;;;Brno;team;Peníze;Chemie

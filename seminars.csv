@@ -1,6 +1,6 @@
-title;description;date;yearBorn;class;type;location;subject
-Příprava na MO;Intenzivní příprava na matematickou olympiádu;01.04.2024;2011;6;individual;praha;math
-Programování v Pythonu;Základy programování pro začátečníky;05.05.2024;2010;7;team;online;programming
-Chemické experimenty;Praktický seminář chemických pokusů;15.03.2024;2009;8;team;brno;chemistry
-Fyzikální měření;Workshop fyzikálních měření;22.04.2024;2012;5;individual;praha;physics
-Biologické bádání;Přírodovědný seminář v terénu;08.06.2024;2011;6;team;brno;biology
+title;shortDescription;longDescription;firstDate;yearBornMin;yearBornMax;classMin;classMax;Kontakt;Location;subject
+Příprava na MO;Příprava na MO;Příprava na MO;01.04.2024;2011;2011;;;https://www.matematickaolympiada.cz/;Praha;Matematika
+Programování v Pythonu;Programování v Pythonu;Programování v Pythonu;05.05.2024;2010;;7;;https://www.matematickaolympiada.cz/;Praha;Programování
+Chemické experimenty;Chemické experimenty;Chemické experimenty;15.03.2024;;;6;8;https://www.matematickaolympiada.cz/;Praha;Chemie
+Fyzikální měření;Fyzikální měření;Fyzikální měření;22.04.2024;2012;2013;;;https://www.matematickaolympiada.cz/;Praha;Fyzika
+Biologické bádání;Biologické bádání;Biologické bádání;08.06.2024;2011;2012;;;https://www.matematickaolympiada.cz/;Praha;Biologie

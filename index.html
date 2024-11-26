@@ -76,6 +76,7 @@
             gap: 15px;
             flex-wrap: wrap;
             padding: 0 20px;
+            align-items: stretch; /* This ensures all items have the same height */
         }
 
         .filter-section select {
@@ -124,49 +125,63 @@
         }
 
         .card {
-            background-color: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             cursor: pointer;
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            line-height: 1.3;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f2f5;
-        }
-
-        .card-main-info {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .card-main-info p {
-            margin: 0;
-            color: #34495e;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-
-        .card-main-info strong {
-            color: #2c3e50;
-            min-width: 80px;
-            display: inline-block;
+            border: 1px solid #eef2f7;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
+
+        .card-title {
+            color: #1a1a1a;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            border-bottom: 1px solid #eef2f7;
+            padding-bottom: 12px;
+        }
+
+        .card-description {
+            color: #4a4a4a;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .card-details {
+            display: grid;
+            gap: 12px;
+        }
+
+        .card-details p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #4a4a4a;
+            padding: 4px 0;
+        }
+
+        .card-details i {
+            color: #666;
+            width: 16px;
+            color: #3498db;
+            width: 20px;
+        }
+
+        .card-date { color: #e17055; }
+        .card-location { color: #00b894; }
+        .card-year { color: #6c5ce7; }
+        .card-class { color: #00cec9; }
+        .card-type { color: #fdcb6e; }
 
         .modal {
             display: none;
@@ -176,58 +191,188 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
+            overflow-y: auto;
         }
 
         .modal-content {
             background-color: white;
-            margin: 10% auto;
+            margin: 5vh auto;
             padding: 40px;
-            border-radius: 15px;
+            border-radius: 20px;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f2f5;
         }
 
         .modal-title {
             color: #2c3e50;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-right: 40px;
+            line-height: 1.3;
         }
 
-        .modal-info p {
-            margin: 12px 0;
-            color: #34495e;
+        .modal-description {
+            color: #4a4a4a;
             font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .modal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateX(5px);
+        }
+
+        .detail-item i {
+            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            background: #ebf5ff;
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-right: 8px;
+        }
+
+        .detail-value {
+            color: #4a4a4a;
+        }
+
+        .modal-dates {
+            display: grid;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .date-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .date-item:hover {
+            transform: translateX(5px);
+        }
+
+        .date-item i {
+            color: #3498db;
+        }
+
+        .modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .modal-link:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
         }
 
         .modal .close {
             position: absolute;
             right: 25px;
-            top: 20px;
-            color: #95a5a6;
-            font-size: 28px;
-            font-weight: bold;
+            top: 25px;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: #f8f9fa;
+            border: none;
             cursor: pointer;
-            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
         }
 
         .modal .close:hover {
-            color: #2c3e50;
+            background: #e9ecef;
+            transform: rotate(90deg);
         }
 
+        .modal .close i {
+            font-size: 1.2rem;
+            color: #4a4a4a;
+        }
+
+        /* Responsive design */
         @media (max-width: 768px) {
             .modal-content {
-                margin: 20% auto;
-                padding: 30px;
-                width: 95%;
+                margin: 0;
+                min-height: 100vh;
+                border-radius: 0;
+                padding: 30px 20px;
             }
-            
+
+            .modal-details {
+                grid-template-columns: 1fr;
+            }
+
             .modal-title {
-                font-size: 1.5rem;
-                padding-right: 30px;
+                font-size: 1.8rem;
             }
         }
 
@@ -372,21 +517,14 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 10px;
-            padding: 25px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 20px;
         }
 
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 25px;
-            background-color: white;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 20px;
         }
 
         .calendar-header h3 {
@@ -397,21 +535,16 @@
         }
 
         .month-nav {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
+            background: white;
+            border: 1px solid #eee;
+            padding: 8px 16px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+            transition: all 0.2s ease;
         }
 
         .month-nav:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+            background: #f8f9fa;
         }
 
         .weekday {
@@ -426,11 +559,11 @@
 
         .calendar-day {
             min-height: 120px;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #eee;
-            border-radius: 10px;
+            border-radius: 8px;
             background-color: white;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .calendar-day:hover {
@@ -467,19 +600,20 @@
         .calendar-event {
             background-color: #3498db;
             color: white;
-            padding: 8px 12px;
+            padding: 6px 10px;
             margin: 4px 0;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+            transition: all 0.2s ease;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .calendar-event:hover {
             background-color: #2980b9;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
         }
 
         .suggestion-btn {
@@ -668,6 +802,120 @@
             padding: 0 20px;
             align-items: stretch; /* This ensures all items have the same height */
         }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            padding: 25px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            background-color: white;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .calendar-header h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .month-nav {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .month-nav:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .weekday {
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .calendar-day {
+            min-height: 120px;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .calendar-day.empty {
+            background-color: #f8f9fa;
+            border: none;
+        }
+
+        .calendar-day.has-event {
+            background-color: #ebf5fb;
+            border: 1px solid #bde0f3;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #3498db;
+            background-color: #f7fbfe;
+        }
+
+        .calendar-day.past {
+            background-color: #f8f9fa;
+            color: #95a5a6;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .calendar-event {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .calendar-event:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -691,7 +939,7 @@
         </div>
         <div class="filter-section">
             <select id="competitions-yearFilter">
-                <option value="">Rok narození</option>
+                <option value="">Ročník narození</option>
                 <option value="2014">2014</option>
                 <option value="2013">2013</option>
                 <option value="2012">2012</option>
@@ -735,12 +983,6 @@
 
             <select id="competitions-subjectFilter">
                 <option value="">Předmět</option>
-                <option value="math">Matematika</option>
-                <option value="physics">Fyzika</option>
-                <option value="chemistry">Chemie</option>
-                <option value="biology">Biologie</option>
-                <option value="programming">Programování</option>
-                <option value="other">Ostatní</option>
             </select>
 
             <button class="reset-filters-btn" onclick="resetFilters('competitions')">
@@ -762,7 +1004,7 @@
         </div>
         <div class="filter-section">
             <select id="seminars-yearFilter">
-                <option value="">Rok narození</option>
+                <option value="">Ročník narození</option>
                 <option value="2014">2014</option>
                 <option value="2013">2013</option>
                 <option value="2012">2012</option>
@@ -783,12 +1025,6 @@
                 <option value="9">9. třída</option>
             </select>
 
-            <select id="seminars-teamFilter">
-                <option value="">Typ účasti</option>
-                <option value="individual">Jednotlivec</option>
-                <option value="team">Tým</option>
-            </select>
-
             <select id="seminars-locationFilter">
                 <option value="">Místo konání</option>
                 <option value="praha">Praha</option>
@@ -798,12 +1034,6 @@
 
             <select id="seminars-subjectFilter">
                 <option value="">Předmět</option>
-                <option value="math">Matematika</option>
-                <option value="physics">Fyzika</option>
-                <option value="chemistry">Chemie</option>
-                <option value="biology">Biologie</option>
-                <option value="programming">Programování</option>
-                <option value="other">Ostatní</option>
             </select>
 
             <button class="reset-filters-btn" onclick="resetFilters('seminars')">
@@ -825,7 +1055,7 @@
         </div>
         <div class="filter-section">
             <select id="projects-yearFilter">
-                <option value="">Rok narození</option>
+                <option value="">Ročník narození</option>
                 <option value="2014">2014</option>
                 <option value="2013">2013</option>
                 <option value="2012">2012</option>
@@ -846,18 +1076,12 @@
                 <option value="5">5. třída</option>
                 <option value="6">6. třída</option>
                 <option value="7">7. třída</option>
-                <option value="8">8. třda</option>
+                <option value="8">8. třída</option>
                 <option value="9">9. třída</option>
                 <option value="10">10. třída</option>
                 <option value="11">11. třída</option>
                 <option value="12">12. třída</option>
                 <option value="13">13. třída</option>
-            </select>
-
-            <select id="projects-teamFilter">
-                <option value="">Typ časti</option>
-                <option value="individual">Jednotlivec</option>
-                <option value="team">Tým</option>
             </select>
 
             <select id="projects-locationFilter">
@@ -869,12 +1093,6 @@
 
             <select id="projects-subjectFilter">
                 <option value="">Předmět</option>
-                <option value="math">Matematika</option>
-                <option value="physics">Fyzika</option>
-                <option value="chemistry">Chemie</option>
-                <option value="biology">Biologie</option>
-                <option value="programming">Programování</option>
-                <option value="other">Ostatní</option>
             </select>
 
             <button class="reset-filters-btn" onclick="resetFilters('projects')">
@@ -999,6 +1217,11 @@
                 console.log('Loaded seminars:', window.allSeminars);
                 console.log('Loaded projects:', window.allProjects);
 
+                // Update filters with actual data
+                updateSubjectFilter('competitions');
+                updateSubjectFilter('seminars');
+                updateSubjectFilter('projects');
+
                 // Initial render
                 renderItems('competitions');
             } catch (error) {
@@ -1093,64 +1316,146 @@
         // Card creation functions
         function createCompetitionCard(competition) {
             return `
-                <div class="card" onclick='showModal("competition", ${JSON.stringify(competition)})'>
-                    <h3>${competition.title || 'No Title'}</h3>
-                    <p><strong>Date:</strong> ${competition.date || 'N/A'}</p>
-                    <p><strong>Age Group:</strong> ${competition.ageGroup || 'N/A'}</p>
-                    <p><strong>Location:</strong> ${competition.location || 'N/A'}</p>
+                <div class="card" data-item='${JSON.stringify(competition).replace(/'/g, "&apos;")}'>
+                    ${competition.title ? `<h3 class="card-title">${competition.title}</h3>` : ''}
+                    ${competition.shortDescription ? `<p class="card-description">${competition.shortDescription}</p>` : ''}
+                    <div class="card-details">
+                        ${competition.firstDateName && competition.firstDate ? 
+                            `<p class="card-date"><i class="far fa-calendar-alt"></i> ${competition.firstDateName}: ${competition.firstDate}</p>` : ''}
+                        ${competition.Location ? `<p class="card-location"><i class="fas fa-map-marker-alt"></i> ${competition.Location}</p>` : ''}
+                        ${competition.yearBornMin && competition.yearBornMax ? 
+                            `<p class="card-year"><i class="fas fa-birthday-cake"></i> Ročník: ${competition.yearBornMin} až ${competition.yearBornMax}</p>` : ''}
+                        ${competition.classMin && competition.classMax ? 
+                            `<p class="card-class"><i class="fas fa-school"></i> Třída: ${competition.classMin}. až ${competition.classMax}. třída</p>` : ''}
+                    </div>
                 </div>
             `;
         }
 
         function createSeminarCard(seminar) {
             return `
-                <div class="card" onclick='showModal("seminar", ${JSON.stringify(seminar)})'>
-                    <h3>${seminar.title || 'No Title'}</h3>
-                    <p><strong>Date:</strong> ${seminar.date || 'N/A'}</p>
-                    <p><strong>Age Group:</strong> ${seminar.ageGroup || 'N/A'}</p>
-                    <p><strong>Location:</strong> ${seminar.location || 'N/A'}</p>
+                <div class="card" data-item='${JSON.stringify(seminar).replace(/'/g, "&apos;")}'>
+                    ${seminar.title ? `<h3 class="card-title">${seminar.title}</h3>` : ''}
+                    ${seminar.shortDescription ? `<p class="card-description">${seminar.shortDescription}</p>` : ''}
+                    <div class="card-details">
+                        ${seminar.firstDate ? `<p class="card-date"><i class="far fa-calendar-alt"></i> ${seminar.firstDate}</p>` : ''}
+                        ${seminar.Location ? `<p class="card-location"><i class="fas fa-map-marker-alt"></i> ${seminar.Location}</p>` : ''}
+                        ${seminar.yearBornMin && seminar.yearBornMax ? 
+                            `<p class="card-year"><i class="fas fa-birthday-cake"></i> Ročník: ${seminar.yearBornMin} až ${seminar.yearBornMax}</p>` : ''}
+                        ${seminar.classMin && seminar.classMax ? 
+                            `<p class="card-class"><i class="fas fa-school"></i> Třída: ${seminar.classMin}. až ${seminar.classMax}. třída</p>` : ''}
+                    </div>
                 </div>
             `;
         }
 
         function createProjectCard(project) {
             return `
-                <div class="card" onclick='showModal("project", ${JSON.stringify(project)})'>
-                    <h3>${project.title || 'No Title'}</h3>
-                    <p><strong>Date:</strong> ${project.date || 'N/A'}</p>
-                    <p><strong>Age Group:</strong> ${project.ageGroup || 'N/A'}</p>
-                    <p><strong>Location:</strong> ${project.location || 'N/A'}</p>
+                <div class="card" data-type="project" data-item='${JSON.stringify(project).replace(/'/g, "&apos;")}'>
+                    ${project.title ? `<h3 class="card-title">${project.title}</h3>` : ''}
+                    ${project.shortDescription ? `<p class="card-description">${project.shortDescription}</p>` : ''}
+                    <div class="card-details">
+                        ${project.Kdy ? `<p class="card-date"><i class="far fa-calendar-alt"></i> ${project.Kdy}</p>` : ''}
+                        ${project.Location ? `<p class="card-location"><i class="fas fa-map-marker-alt"></i> ${project.Location}</p>` : ''}
+                        ${project.yearBornMin && project.yearBornMax ? 
+                            `<p class="card-year"><i class="fas fa-birthday-cake"></i> Ročník: ${project.yearBornMin} až ${project.yearBornMax}</p>` : ''}
+                        ${project.classMin && project.classMax ? 
+                            `<p class="card-class"><i class="fas fa-school"></i> Třída: ${project.classMin}. až ${project.classMax}. třída</p>` : ''}
+                    </div>
                 </div>
             `;
         }
 
         // Modal functions
         function showModal(type, item) {
-            console.log('Opening modal for:', item); // Debug log
             const modal = document.getElementById('detailModal');
             const modalContent = document.getElementById('modalContent');
             
-            if (!modal || !modalContent) {
-                console.error('Modal elements not found!');
-                return;
-            }
-            
             let content = `
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2 class="modal-title">${item.title}</h2>
-                <div class="modal-info">
-                    <p><strong>Popis:</strong> ${item.description}</p>
-                    <p><strong>Datum:</strong> ${item.date}</p>
-                    <p><strong>Ročník:</strong> ${item.class}. třída</p>
-                    <p><strong>Pro rok narození:</strong> ${item.yearBorn}</p>
-                    <p><strong>Typ účasti:</strong> ${item.type === 'individual' ? 'Jednotlivec' : 'Tým'}</p>
-                    <p><strong>Místo konání:</strong> ${item.location}</p>
-                    <p><strong>Předmět:</strong> ${item.subject}</p>
+                <button class="close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <div class="modal-header">
+                    ${item.title ? `<h2 class="modal-title">${item.title}</h2>` : ''}
                 </div>
+
+                ${item.longDescription ? `
+                    <div class="modal-description">
+                        <p>${item.longDescription}</p>
+                    </div>
+                ` : ''}
+
+                <div class="modal-details">
+                    ${item.Location ? `
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <span class="detail-label">Místo</span>
+                                <div class="detail-value">${item.Location}</div>
+                            </div>
+                        </div>` : ''}
+                    
+                    ${type !== 'project' && item.Type ? `
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <span class="detail-label">Typ účasti</span>
+                                <div class="detail-value">${item.Type === 'individual' ? 'Jednotlivec' : 'Tým'}</div>
+                            </div>
+                        </div>` : ''}
+
+                    ${item.Subject ? `
+                        <div class="detail-item">
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <span class="detail-label">Předmět</span>
+                                <div class="detail-value">${item.Subject}</div>
+                            </div>
+                        </div>` : ''}
+
+                    ${type === 'competition' && item.Cena ? `
+                        <div class="detail-item">
+                            <i class="fas fa-trophy"></i>
+                            <div>
+                                <span class="detail-label">Cena</span>
+                                <div class="detail-value">${item.Cena}</div>
+                            </div>
+                        </div>` : ''}
+                </div>
+
+                ${(item.firstDateName || item.firstDate || item.Kdy) ? `
+                    <div class="modal-dates">
+                        <h3>Důležité termíny</h3>
+                        ${type === 'project' ? `
+                            <div class="date-item">
+                                <i class="far fa-calendar-alt"></i>
+                                <span class="detail-value">${item.Kdy}</span>
+                            </div>
+                        ` : ['first', 'second', 'third', 'fourth', 'fifth'].map(prefix => {
+                            const dateName = item[`${prefix}DateName`];
+                            const date = item[`${prefix}Date`];
+                            return dateName && date ? `
+                                <div class="date-item">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <span class="detail-label">${dateName}:</span>
+                                    <span class="detail-value">${date}</span>
+                                </div>
+                            ` : '';
+                        }).join('')}
+                    </div>
+                ` : ''}
+
+                ${item.Link ? `
+                    <a href="${item.Link}" target="_blank" class="modal-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        Více informací
+                    </a>
+                ` : ''}
             `;
-            
+
             modalContent.innerHTML = content;
-            modal.style.display = "block";
+            modal.style.display = 'block';
         }
 
         function closeModal() {
@@ -1239,15 +1544,53 @@
             const daysInMonth = lastDay.getDate();
             const startingDay = firstDay.getDay();
             
+            // Get events based on section
             let events;
-            if (section === 'competitions') events = window.allCompetitions;
-            else if (section === 'seminars') events = window.allSeminars;
-            else events = window.allProjects;
-            
+            if (section === 'competitions') {
+                events = window.allCompetitions || [];
+            } else if (section === 'seminars') {
+                events = window.allSeminars || [];
+            } else {
+                events = window.allProjects || [];
+            }
+
+            // Apply current filters
+            const yearFilter = document.getElementById(`${section}-yearFilter`)?.value;
+            const classFilter = document.getElementById(`${section}-classFilter`)?.value;
+            const teamFilter = document.getElementById(`${section}-teamFilter`)?.value;
+            const locationFilter = document.getElementById(`${section}-locationFilter`)?.value;
+            const subjectFilter = document.getElementById(`${section}-subjectFilter`)?.value;
+
+            const filteredEvents = events.filter(item => {
+                const yearMatch = !yearFilter || 
+                    (!item.yearBornMin && !item.yearBornMax) ||
+                    (parseInt(yearFilter) >= parseInt(item.yearBornMin) && 
+                     parseInt(yearFilter) <= parseInt(item.yearBornMax));
+
+                const classMatch = !classFilter || 
+                    (!item.classMin && !item.classMax) ||
+                    (parseInt(classFilter) >= parseInt(item.classMin) && 
+                     parseInt(classFilter) <= parseInt(item.classMax));
+
+                const teamMatch = !teamFilter || !item.Type || 
+                    item.Type.toLowerCase() === teamFilter.toLowerCase();
+
+                const locationMatch = !locationFilter || !item.Location || 
+                    item.Location.toLowerCase() === locationFilter.toLowerCase() ||
+                    item.Location === 'Všude';
+
+                const subjectMatch = !subjectFilter || 
+                    (section === 'competitions' ? 
+                        (!item.Subject || item.Subject.toLowerCase() === subjectFilter.toLowerCase()) :  // Capital S for competitions
+                        (!item.subject || item.subject.toLowerCase() === subjectFilter.toLowerCase()));  // lowercase s for others
+
+                return yearMatch && classMatch && teamMatch && locationMatch && subjectMatch;
+            });
+
             let calendarHTML = `
                 <div class="calendar-header">
                     <button class="month-nav" onclick="changeMonth('${section}', -1)">←</button>
-                    <h3>${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}</h3>
+                    <h3>${new Date(year, month).toLocaleString('cs-CZ', { month: 'long' })} ${year}</h3>
                     <button class="month-nav" onclick="changeMonth('${section}', 1)">→</button>
                 </div>
                 <div class="calendar-grid">
@@ -1259,31 +1602,61 @@
                     <div class="weekday">Pá</div>
                     <div class="weekday">So</div>
             `;
-            
+
             // Add empty cells for days before start of month
             for (let i = 0; i < startingDay; i++) {
                 calendarHTML += '<div class="calendar-day empty"></div>';
             }
-            
+
             // Add days with events
             const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
             for (let day = 1; day <= daysInMonth; day++) {
                 const currentDate = new Date(year, month, day);
-                const dateString = formatDate(currentDate);
-                const dayEvents = events.filter(event => event.date === dateString);
-                const isToday = today.toDateString() === currentDate.toDateString();
-                const isPast = currentDate < today && !isToday;
-                
+                currentDate.setHours(0, 0, 0, 0);
+
+                // Find events for this day
+                const dayEvents = filteredEvents.filter(event => {
+                    let eventDate;
+                    if (section === 'competitions') {
+                        eventDate = event.firstDate; // For competitions
+                    } else if (section === 'seminars') {
+                        eventDate = event.firstDate; // For seminars
+                    } else {
+                        eventDate = event.Kdy; // For projects
+                    }
+
+                    if (!eventDate) return false;
+
+                    // Parse the date (assuming DD.MM.YYYY format)
+                    const [eventDay, eventMonth, eventYear] = eventDate.split('.');
+                    const eventDateObj = new Date(
+                        parseInt(eventYear),
+                        parseInt(eventMonth) - 1,
+                        parseInt(eventDay)
+                    );
+                    eventDateObj.setHours(0, 0, 0, 0);
+
+                    return eventDateObj.getTime() === currentDate.getTime();
+                });
+
+                const isToday = today.getTime() === currentDate.getTime();
+                const isPast = currentDate.getTime() < today.getTime();
+
                 calendarHTML += `
-                    <div class="calendar-day ${dayEvents.length ? 'has-event' : ''} ${isToday ? 'today' : ''} ${isPast ? 'past' : ''}">
+                    <div class="calendar-day${dayEvents.length ? ' has-event' : ''}${isToday ? ' today' : ''}${isPast ? ' past' : ''}">
                         <div class="day-number">${day}</div>
                         ${dayEvents.map(event => `
-                            <div class="calendar-event" onclick='showModal("${section.slice(0, -1)}", ${JSON.stringify(event).replace(/'/g, "\\'")})'>${event.title}</div>
+                            <div class="calendar-event" onclick='showModal("${section.slice(0, -1)}", ${JSON.stringify(event).replace(/'/g, "\\'")})'
+                                 title="${event.title}">
+                                ${event.title}
+                            </div>
                         `).join('')}
                     </div>
                 `;
             }
-            
+
             calendarHTML += '</div>';
             calendar.innerHTML = calendarHTML;
         }
@@ -1348,52 +1721,57 @@
                 items = window.allProjects;
             }
 
-            // Get filter values using section-specific IDs
+            // Get filter values
             const yearFilter = document.getElementById(`${section}-yearFilter`)?.value || '';
             const classFilter = document.getElementById(`${section}-classFilter`)?.value || '';
             const teamFilter = document.getElementById(`${section}-teamFilter`)?.value || '';
             const locationFilter = document.getElementById(`${section}-locationFilter`)?.value || '';
             const subjectFilter = document.getElementById(`${section}-subjectFilter`)?.value || '';
 
-            // Apply filters
             const filteredItems = items.filter(item => {
-                const yearMatch = !yearFilter || item.yearBorn.toString() === yearFilter;
-                const classMatch = !classFilter || item.class.toString() === classFilter;
-                const teamMatch = !teamFilter || item.type === teamFilter;
-                const locationMatch = !locationFilter || item.location.toLowerCase() === locationFilter.toLowerCase();
-                const subjectMatch = !subjectFilter || item.subject.toLowerCase() === subjectFilter.toLowerCase();
+                // Year match if: no filter, or empty year fields, or within range
+                const yearMatch = !yearFilter || 
+                    (!item.yearBornMin && !item.yearBornMax) ||  // Show if years not specified
+                    (item.yearBornMin && item.yearBornMax && 
+                    (yearFilter >= item.yearBornMin && yearFilter <= item.yearBornMax));
+
+                // Class match if: no filter, or empty class fields, or within range
+                const classMatch = !classFilter || 
+                    (!item.classMin && !item.classMax) ||  // Show if classes not specified
+                    (item.classMin && item.classMax && 
+                    (classFilter >= item.classMin && classFilter <= item.classMax));
+
+                // Team match if: no filter, or empty type, or matches type
+                const teamMatch = !teamFilter || 
+                    !item.Type ||  // Show if type not specified
+                    item.Type === teamFilter;
+
+                // Location match if: no filter, or empty location, or matches location, or location is "Všude"
+                const locationMatch = !locationFilter || 
+                    !item.Location ||  
+                    item.Location.toLowerCase() === locationFilter.toLowerCase() ||
+                    item.Location === 'Všude';  // This line makes "Všude" always match
+
+                // Subject match if: no filter, or empty subject, or matches subject
+                const subjectMatch = !subjectFilter || 
+                    (section === 'competitions' ? 
+                        (!item.Subject || item.Subject.toLowerCase() === subjectFilter.toLowerCase()) :  // Capital S for competitions
+                        (!item.subject || item.subject.toLowerCase() === subjectFilter.toLowerCase()));  // lowercase s for others
 
                 return yearMatch && classMatch && teamMatch && locationMatch && subjectMatch;
             });
 
-            // Generate HTML for filtered items
-            const html = filteredItems.map(item => {
-                // Determine whether to show class or year or both
-                let gradeInfo = '';
-                if (item.class && item.yearBorn) {
-                    gradeInfo = `<p><strong>Třída:</strong> ${item.class}. třída</p>`;
-                } else if (item.class) {
-                    gradeInfo = `<p><strong>Třída:</strong> ${item.class}. třída</p>`;
-                } else if (item.yearBorn) {
-                    gradeInfo = `<p><strong>Ročník:</strong> ${item.yearBorn}</p>`;
-                }
+            // Generate HTML using the appropriate card creation function
+            let html;
+            if (section === 'competitions') {
+                html = filteredItems.map(item => createCompetitionCard(item)).join('');
+            } else if (section === 'seminars') {
+                html = filteredItems.map(item => createSeminarCard(item)).join('');
+            } else if (section === 'projects') {
+                html = filteredItems.map(item => createProjectCard(item)).join('');
+            }
 
-                return `
-                    <div class="card" data-item='${JSON.stringify(item).replace(/'/g, "&apos;")}'>
-                        <h3>${item.title}</h3>
-                        <div class="card-main-info">
-                            <p><strong>Popis:</strong> ${item.description}</p>
-                            <p><strong>Datum:</strong> ${item.date}</p>
-                            <p><strong>Místo:</strong> ${item.location}</p>
-                            <p><strong>Předmět:</strong> ${item.subject}</p>
-                            ${gradeInfo}
-                            <p><strong>Typ:</strong> ${item.type === 'individual' ? 'Jednotlivec' : 'Tým'}</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = html;
+            container.innerHTML = html || '<p class="no-results">Žádné výsledky</p>';
 
             // Add click event listeners
             container.querySelectorAll('.card').forEach(card => {
@@ -1421,6 +1799,9 @@
                         filter.addEventListener('change', () => {
                             if (document.getElementById(section).style.display === 'block') {
                                 renderItems(section);
+                                if (document.getElementById(`${section}-calendar`).style.display === 'block') {
+                                    renderCalendar(section);
+                                }
                             }
                         });
                     }
@@ -1441,7 +1822,6 @@
             });
 
         function resetFilters(section) {
-            // Get all filters for the section
             const filters = [
                 document.getElementById(`${section}-yearFilter`),
                 document.getElementById(`${section}-classFilter`),
@@ -1450,17 +1830,18 @@
                 document.getElementById(`${section}-subjectFilter`)
             ];
 
-            // Reset each filter to default value
             filters.forEach(filter => {
                 if (filter) {
                     filter.value = '';
                 }
             });
 
-            // Re-render the items
+            // Re-render both views
             renderItems(section);
+            if (document.getElementById(`${section}-calendar`).style.display === 'block') {
+                renderCalendar(section);
+            }
 
-            // Add a small animation to the reset button
             const resetBtn = document.querySelector(`#${section} .reset-filters-btn`);
             if (resetBtn) {
                 resetBtn.style.transform = 'rotate(360deg)';
@@ -1468,6 +1849,46 @@
                     resetBtn.style.transform = 'none';
                 }, 300);
             }
+        }
+
+        // Update the subject filter options to match the CSV values
+        function updateSubjectFilter(section) {
+            const subjectFilter = document.getElementById(`${section}-subjectFilter`);
+            if (!subjectFilter) return;
+
+            // Clear existing options except the first one (empty option)
+            while (subjectFilter.options.length > 1) {
+                subjectFilter.remove(1);
+            }
+
+            // Get items based on section
+            let items;
+            if (section === 'competitions') {
+                items = window.allCompetitions || [];
+            } else if (section === 'seminars') {
+                items = window.allSeminars || [];
+            } else {
+                items = window.allProjects || [];
+            }
+
+            // Get unique subjects from the data, using correct case for competitions
+            const subjects = new Set(items.map(item => {
+                if (section === 'competitions') {
+                    return item.Subject;  // Capital S for competitions
+                }
+                return item.subject;      // lowercase s for others
+            }).filter(Boolean));
+
+            // Sort subjects alphabetically
+            const sortedSubjects = Array.from(subjects).sort();
+
+            // Add new options
+            sortedSubjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectFilter.appendChild(option);
+            });
         }
     </script>
 </body>

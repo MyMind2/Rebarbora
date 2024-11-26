@@ -1,6 +1,6 @@
-title;description;date;yearBorn;class;type;location;subject
-Robotický projekt;Stavba a programování robotů;30.05.2024;2010;7;team;praha;programming
-Ekologický výzkum;Zkoumání místního ekosystému;18.04.2024;2011;6;team;brno;biology
-Matematický klub;Pravidelná setkání nad zajímavými úlohami;10.03.2024;2012;5;individual;online;math
-Chemická laboratoř;Praktické experimenty v laboratoři;25.06.2024;2009;8;team;praha;chemistry
-Fyzikální pokusy;Série zajímavých fyzikálních experimentů;05.05.2024;2010;7;individual;brno;physics
+title;shortDescription;longDescription;Kdy;yearBornMin;yearBornMax;classMin;classMax;Kontakt;Location;subject
+Robotický projekt;Stavba a programování robotů;Stavba a programování robotů;30.05.2024;2010;2011;;;https://www.matematickaolympiada.cz/;Praha;Matematika
+Ekologický výzkum;Zkoumání místního ekosystému;Zkoumání místního ekosystému;18.04.2024;;;7;9;https://www.matematickaolympiada.cz/;Praha;Programování
+Matematický klub;Pravidelná setkání nad zajímavými úlohami;Pravidelná setkání nad zajímavými úlohami;10.03.2024;;;6;8;https://www.matematickaolympiada.cz/;Praha;Chemie
+Chemická laboratoř;Praktické experimenty v laboratoři;Praktické experimenty v laboratoři;25.06.2024;2009;2010;;;https://www.matematickaolympiada.cz/;Praha;Fyzika
+Fyzikální pokusy;Série zajímavých fyzikálních experimentů;Série zajímavých fyzikálních experimentů;05.05.2024;2010;2012;;;https://www.matematickaolympiada.cz/;Praha;Biologie
