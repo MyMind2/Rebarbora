@@ -1351,7 +1351,7 @@
 
         function createProjectCard(project) {
             return `
-                <div class="card" data-type="project" data-item='${JSON.stringify(project).replace(/'/g, "&apos;")}'>
+                <div class="card" data-item='${JSON.stringify(project).replace(/'/g, "&apos;")}'>
                     ${project.title ? `<h3 class="card-title">${project.title}</h3>` : ''}
                     ${project.shortDescription ? `<p class="card-description">${project.shortDescription}</p>` : ''}
                     <div class="card-details">
@@ -1387,7 +1387,7 @@
                 ` : ''}
 
                 <div class="modal-details">
-                    ${item.Location ? `
+                    ${type !== 'competition' && item.Location ? `
                         <div class="detail-item">
                             <i class="fas fa-map-marker-alt"></i>
                             <div>
@@ -1396,43 +1396,48 @@
                             </div>
                         </div>` : ''}
                     
-                    ${type !== 'project' && item.Type ? `
+                    ${type === 'competition' ? `
+                        ${item.Type ? `
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <div>
+                                    <span class="detail-label">Typ účasti</span>
+                                    <div class="detail-value">${item.Type === 'individual' ? 'Jednotlivec' : 'Tým'}</div>
+                                </div>
+                            </div>` : ''}
+                        ${item.Cena ? `
+                            <div class="detail-item">
+                                <i class="fas fa-trophy"></i>
+                                <div>
+                                    <span class="detail-label">Cena</span>
+                                    <div class="detail-value">${item.Cena}</div>
+                                </div>
+                            </div>` : ''}
+                    ` : ''}
+
+                    ${type !== 'competition' && item.yearBornMin && item.yearBornMax ? `
                         <div class="detail-item">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-birthday-cake"></i>
                             <div>
-                                <span class="detail-label">Typ účasti</span>
-                                <div class="detail-value">${item.Type === 'individual' ? 'Jednotlivec' : 'Tým'}</div>
+                                <span class="detail-label">Ročník narození</span>
+                                <div class="detail-value">${item.yearBornMin} až ${item.yearBornMax}</div>
                             </div>
                         </div>` : ''}
 
-                    ${item.Subject ? `
+                    ${type !== 'competition' && item.classMin && item.classMax ? `
                         <div class="detail-item">
-                            <i class="fas fa-book"></i>
+                            <i class="fas fa-school"></i>
                             <div>
-                                <span class="detail-label">Předmět</span>
-                                <div class="detail-value">${item.Subject}</div>
-                            </div>
-                        </div>` : ''}
-
-                    ${type === 'competition' && item.Cena ? `
-                        <div class="detail-item">
-                            <i class="fas fa-trophy"></i>
-                            <div>
-                                <span class="detail-label">Cena</span>
-                                <div class="detail-value">${item.Cena}</div>
+                                <span class="detail-label">Třída</span>
+                                <div class="detail-value">${item.classMin}. až ${item.classMax}. třída</div>
                             </div>
                         </div>` : ''}
                 </div>
 
-                ${(item.firstDateName || item.firstDate || item.Kdy) ? `
+                ${type === 'competition' && (item.firstDateName || item.firstDate) ? `
                     <div class="modal-dates">
                         <h3>Důležité termíny</h3>
-                        ${type === 'project' ? `
-                            <div class="date-item">
-                                <i class="far fa-calendar-alt"></i>
-                                <span class="detail-value">${item.Kdy}</span>
-                            </div>
-                        ` : ['first', 'second', 'third', 'fourth', 'fifth'].map(prefix => {
+                        ${['first', 'second', 'third', 'fourth', 'fifth'].map(prefix => {
                             const dateName = item[`${prefix}DateName`];
                             const date = item[`${prefix}Date`];
                             return dateName && date ? `
@@ -1446,8 +1451,18 @@
                     </div>
                 ` : ''}
 
-                ${item.Link ? `
-                    <a href="${item.Link}" target="_blank" class="modal-link">
+                ${type !== 'competition' && item.Kdy ? `
+                    <div class="modal-dates">
+                        <h3>Termín</h3>
+                        <div class="date-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span class="detail-value">${item.Kdy}</span>
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${item.Link || item.Kontakt ? `
+                    <a href="${item.Link || item.Kontakt}" target="_blank" class="modal-link">
                         <i class="fas fa-external-link-alt"></i>
                         Více informací
                     </a>
