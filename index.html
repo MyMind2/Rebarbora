@@ -124,6 +124,18 @@
             padding: 20px 0;
         }
 
+        @media (max-width: 768px) {
+            #competitions-list, #seminars-list, #projects-list {
+                grid-template-columns: 1fr;  /* Changes to single column on mobile */
+                gap: 20px;  /* Slightly reduced gap for mobile */
+                padding: 15px 0;
+            }
+
+            .card {
+                margin: 10px 0;  /* Adjusted margin for mobile */
+            }
+        }
+
         .card {
             background: white;
             border-radius: 8px;
@@ -387,7 +399,7 @@
 
         .main-title {
             font-size: 7rem;
-            transition: all 1s ease;
+            transition: all 0.8s ease;
             opacity: 1;
             transform: translateY(0);
         }
@@ -399,7 +411,7 @@
         }
 
         .main-navigation {
-            transition: all 1s ease;
+            transition: all 0.8s ease;
             margin: 50px 0;
         }
 
@@ -413,7 +425,7 @@
         }
 
         .main-nav-button {
-            transition: all 1s ease;
+            transition: all 0.8s ease;
         }
 
         .section-header {
@@ -916,10 +928,53 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
         }
+
+        .title-container {
+            text-align: center;
+            margin: 3rem 0;
+            transition: all 0.8s ease;
+        }
+
+        .main-title {
+            font-size: 7rem;
+            color: #2c3e50;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #34495e;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 400;
+            padding: 0 20px;
+            transition: opacity 0.8s ease;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 4rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1 class="main-title">Rebarbora</h1>
+    <div class="title-container">
+        <h1 class="main-title">Rebarbora</h1>
+        <p class="subtitle">
+            Rebarbora je platforma pro studenty střední a vysoké školy s plným přehledem všech olympiád, soutěží, seminářů a projektů. V budoucnu přidáme i stipendijní programy a workshopy.
+        </p>
+    </div>
     
     <div class="main-navigation">
         <button class="main-nav-button" onclick="showSection('competitions')">Soutěže</button>
@@ -1134,11 +1189,28 @@
 
         // Function to show/hide sections
         function showSection(sectionId) {
-            // Slide up and hide the title
+            // Hide all sections
+            document.getElementById('competitions').style.display = 'none';
+            document.getElementById('seminars').style.display = 'none';
+            document.getElementById('projects').style.display = 'none';
+
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+
+            // Update subtitle text immediately before animations
+            const subtitle = document.querySelector('.subtitle');
+            const subtitleText = {
+                competitions: 'Zde najdete plný přehled všemožných soutěží. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).',
+                seminars: 'Zde najdete plný přehled všemožných seminářů. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).',
+                projects: 'Zde najdete plný přehled všemožných projektů. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).'
+            };
+            subtitle.textContent = subtitleText[sectionId];
+
+            // Make the title disappear
             const title = document.querySelector('.main-title');
             title.style.fontSize = '0';
-            title.style.opacity = '0';
             title.style.margin = '0';
+            title.style.opacity = '0';
 
             // Shrink the buttons and move them up
             const buttons = document.querySelectorAll('.main-nav-button');
@@ -1150,20 +1222,14 @@
             const navigation = document.querySelector('.main-navigation');
             navigation.style.margin = '20px 0';
 
-            // Hide all sections
-            document.getElementById('competitions').style.display = 'none';
-            document.getElementById('seminars').style.display = 'none';
-            document.getElementById('projects').style.display = 'none';
-
-            // Show selected section
-            document.getElementById(sectionId).style.display = 'block';
-
             // Show suggestion button
             const suggestionBtn = document.getElementById('suggestionButton');
-            suggestionBtn.style.display = 'block';
-            setTimeout(() => {
-                suggestionBtn.classList.add('show');
-            }, 10);
+            if (suggestionBtn) {
+                suggestionBtn.style.display = 'block';
+                setTimeout(() => {
+                    suggestionBtn.classList.add('show');
+                }, 10);
+            }
 
             // Render items for the selected section
             renderItems(sectionId);
@@ -1189,47 +1255,30 @@
         // Load data function
         async function loadData() {
             try {
-                // Load all three CSV files
-                const [competitionsData, seminarsData, projectsData] = await Promise.all([
-                    fetch('competitions.csv')
-                        .then(response => {
-                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                            return response.text();
-                        }),
-                    fetch('seminars.csv')
-                        .then(response => {
-                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                            return response.text();
-                        }),
-                    fetch('projects.csv')
-                        .then(response => {
-                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                            return response.text();
-                        })
-                ]);
+                const sections = ['competitions', 'seminars', 'projects'];
+                const data = await Promise.all(
+                    sections.map(section => 
+                        fetch(`${section}.csv`)
+                            .then(response => {
+                                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                                return response.text();
+                            })
+                    )
+                );
 
-                // Parse all three CSV files
-                window.allCompetitions = parseCSV(competitionsData);
-                window.allSeminars = parseCSV(seminarsData);
-                window.allProjects = parseCSV(projectsData);
+                // Store parsed data
+                sections.forEach((section, index) => {
+                    window[`all${section.charAt(0).toUpperCase() + section.slice(1)}`] = parseCSV(data[index]);
+                });
 
-                console.log('Loaded competitions:', window.allCompetitions);
-                console.log('Loaded seminars:', window.allSeminars);
-                console.log('Loaded projects:', window.allProjects);
-
-                // Update filters with actual data
-                updateSubjectFilter('competitions');
-                updateSubjectFilter('seminars');
-                updateSubjectFilter('projects');
-
-                // Initial render
+                // Update filters and render initial view
+                sections.forEach(section => updateSubjectFilter(section));
                 renderItems('competitions');
             } catch (error) {
                 console.error('Error loading CSV files:', error);
-                // Initialize empty arrays if loading fails
-                window.allCompetitions = [];
-                window.allSeminars = [];
-                window.allProjects = [];
+                ['Competitions', 'Seminars', 'Projects'].forEach(section => {
+                    window[`all${section}`] = [];
+                });
                 renderItems('competitions');
             }
         }
@@ -1496,29 +1545,37 @@
         // Modal event listeners
         document.addEventListener('DOMContentLoaded', function() {
             loadData();
-
-            // Add initial classes
-            document.querySelector('.main-title')?.classList.add('initial');
-            document.querySelector('.main-navigation')?.classList.add('initial');
-            document.querySelectorAll('.main-nav-button').forEach(button => {
-                button.classList.add('initial');
-            });
-
-            // Handle modal clicks through event delegation
-            document.addEventListener('click', function(event) {
-                if (event.target.classList.contains('close')) {
-                    const modal = event.target.closest('.modal');
-                    if (modal) {
-                        modal.style.display = "none";
-                    }
-                }
-                
-                // Close modal when clicking outside
-                if (event.target.classList.contains('modal')) {
-                    event.target.style.display = "none";
-                }
-            });
+            setupEventListeners();
         });
+
+        function setupEventListeners() {
+            ['competitions', 'seminars', 'projects'].forEach(section => {
+                const filters = [
+                    'yearFilter',
+                    'classFilter',
+                    'teamFilter',
+                    'locationFilter',
+                    'subjectFilter'
+                ];
+                
+                filters.forEach(filterType => {
+                    const filterId = `${section}-${filterType}`;
+                    const filter = document.getElementById(filterId);
+                    if (filter) {
+                        filter.addEventListener('change', () => handleFilterChange(section));
+                    }
+                });
+            });
+        }
+
+        function handleFilterChange(section) {
+            if (document.getElementById(section).style.display === 'block') {
+                renderItems(section);
+                if (document.getElementById(`${section}-calendar`).style.display === 'block') {
+                    renderCalendar(section);
+                }
+            }
+        }
 
         function toggleView(section, viewType) {
             const gridView = document.getElementById(`${section}-list`);
@@ -1811,14 +1868,7 @@
                 filters.forEach(filterId => {
                     const filter = document.getElementById(filterId);
                     if (filter) {
-                        filter.addEventListener('change', () => {
-                            if (document.getElementById(section).style.display === 'block') {
-                                renderItems(section);
-                                if (document.getElementById(`${section}-calendar`).style.display === 'block') {
-                                    renderCalendar(section);
-                                }
-                            }
-                        });
+                        filter.addEventListener('change', () => handleFilterChange(section));
                     }
                 });
             });
@@ -1871,39 +1921,37 @@
             const subjectFilter = document.getElementById(`${section}-subjectFilter`);
             if (!subjectFilter) return;
 
-            // Clear existing options except the first one (empty option)
-            while (subjectFilter.options.length > 1) {
-                subjectFilter.remove(1);
-            }
+            // Clear existing options except the first one
+            while (subjectFilter.options.length > 1) subjectFilter.remove(1);
 
-            // Get items based on section
-            let items;
-            if (section === 'competitions') {
-                items = window.allCompetitions || [];
-            } else if (section === 'seminars') {
-                items = window.allSeminars || [];
-            } else {
-                items = window.allProjects || [];
-            }
+            // Get items and extract subjects
+            const items = window[`all${section.charAt(0).toUpperCase() + section.slice(1)}`] || [];
+            const subjects = new Set(items.map(item => 
+                section === 'competitions' ? item.Subject : item.subject
+            ).filter(Boolean));
 
-            // Get unique subjects from the data, using correct case for competitions
-            const subjects = new Set(items.map(item => {
-                if (section === 'competitions') {
-                    return item.Subject;  // Capital S for competitions
-                }
-                return item.subject;      // lowercase s for others
-            }).filter(Boolean));
-
-            // Sort subjects alphabetically
-            const sortedSubjects = Array.from(subjects).sort();
-
-            // Add new options
-            sortedSubjects.forEach(subject => {
+            // Add sorted options
+            Array.from(subjects).sort().forEach(subject => {
                 const option = document.createElement('option');
-                option.value = subject;
-                option.textContent = subject;
+                option.value = option.textContent = subject;
                 subjectFilter.appendChild(option);
             });
+        }
+
+        // Separate subtitle update logic
+        function updateSubtitle(section) {
+            const subtitle = document.querySelector('.subtitle');
+            const subtitleText = {
+                competitions: 'Zde najdete plný přehled všemožných soutěží. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).',
+                seminars: 'Zde najdete plný přehled všemožných seminářů. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).',
+                projects: 'Zde najdete plný přehled všemožných projektů. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).'
+            };
+
+            subtitle.style.opacity = '0';
+            setTimeout(() => {
+                subtitle.textContent = subtitleText[section];
+                subtitle.style.opacity = '1';
+            }, 400);
         }
     </script>
 </body>
