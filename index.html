@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rebarbora</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" href="data:,">
     <style>
         * {
             margin: 0;
@@ -24,18 +25,82 @@
             color: #2c3e50;
             margin: 3rem 0;
             text-align: center;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 4px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.15);
             transition: all 0.8s ease;
+            background: linear-gradient(135deg, #3d65bc 0%, #114996 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .main-title, 
+            .main-title.initial,
+            .main-title.slide-up {
+                font-size: 3rem !important;
+                margin: 2rem 0 !important;
+                letter-spacing: 2px !important;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.15) !important;
+                font-weight: 800 !important;
+                background: linear-gradient(135deg, #3d65bc 0%, #114996 100%) !important;
+                -webkit-background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+                background-clip: text !important;
+            }
+        }
+
+        .main-title.initial {
+            font-size: 7rem;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .main-title, .main-title.initial {
+                font-size: 2.2rem !important;
+                margin: 2rem 0 !important;
+                letter-spacing: 2px !important;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.15) !important;
+            }
+
+            .main-nav-button {
+                width: 100px !important;
+                padding: 15px 0 !important;
+                font-size: 0.9rem !important;
+                letter-spacing: 0 !important;
+                transition: all 0.8s ease !important;  /* Add transition */
+            }
+
+            .subtitle {
+                font-size: 1rem !important;
+                margin: 1.5rem auto !important;
+                padding: 0 15px !important;
+                max-width: 280px !important;
+            }
+
+            .main-navigation {
+                flex-direction: row !important;
+                gap: 5px !important;
+                margin: 20px 0 !important;
+                padding: 0 5px !important;
+                justify-content: center !important;
+                flex-wrap: nowrap !important;
+                width: 100% !important;
+                transition: all 0.8s ease !important;  /* Add transition */
+                transform: translateY(0) !important;   /* Add transform */
+            }
+
+            .main-navigation.slide-up {
+                transform: translateY(-100px) !important;  /* Add slide-up animation */
+            }
         }
 
         .main-navigation {
             display: flex;
             justify-content: center;
             gap: 40px;
-            margin: 50px 0;
+            margin: 0 0 30px 0;  /* Adjusted margin to be above subtitle */
             flex-wrap: wrap;
             padding: 0 20px;
             transition: all 0.8s ease;
@@ -45,7 +110,8 @@
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 45px 90px;
+            padding: 45px 0;
+            width: 280px;
             font-size: 2.2rem;
             cursor: pointer;
             border-radius: 15px;
@@ -54,6 +120,10 @@
             font-weight: bold;
             letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .main-nav-button:hover {
@@ -645,11 +715,13 @@
             opacity: 0;
             transform: translateY(200px);
             transition: all 1s ease;
+            pointer-events: none;  /* Make button unclickable by default */
         }
 
         .suggestion-btn.show {
             opacity: 1;
             transform: translateY(0);
+            pointer-events: auto;  /* Make button clickable when shown */
         }
 
         .suggestion-btn:hover {
@@ -872,118 +944,160 @@
         }
 
         .calendar-day {
-            min-height: 120px;
-            padding: 12px;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            background-color: white;
-            transition: all 0.3s ease;
-        }
-
-        .calendar-day:hover {
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .calendar-day.empty {
-            background-color: #f8f9fa;
-            border: none;
-        }
-
-        .calendar-day.has-event {
-            background-color: #ebf5fb;
-            border: 1px solid #bde0f3;
-        }
-
-        .calendar-day.today {
-            border: 2px solid #3498db;
-            background-color: #f7fbfe;
-        }
-
-        .calendar-day.past {
-            background-color: #f8f9fa;
-            color: #95a5a6;
+            height: 80px;
+            padding: 5px;
+            font-size: 0.9rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .day-number {
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #2c3e50;
-            font-size: 1.1rem;
+            margin-bottom: 4px;
+            flex-shrink: 0;
         }
 
         .calendar-event {
-            background-color: #3498db;
-            color: white;
-            padding: 8px 12px;
-            margin: 4px 0;
-            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 0.75rem;
+            margin: 2px 0;
+            flex-shrink: 0;
+        }
+
+        .calendar-header {
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .calendar-header h3 {
+            font-size: 1.4rem;
+        }
+
+        .month-nav {
+            padding: 8px 16px;
             font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
-        }
-
-        .calendar-event:hover {
-            background-color: #2980b9;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-        }
-
-        .title-container {
-            text-align: center;
-            margin: 3rem 0;
-            transition: all 0.8s ease;
-        }
-
-        .main-title {
-            font-size: 7rem;
-            color: #2c3e50;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 1rem;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #34495e;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-            font-weight: 400;
-            padding: 0 20px;
-            transition: opacity 0.8s ease;
         }
 
         @media (max-width: 768px) {
-            .main-title {
-                font-size: 4rem;
+            .calendar-grid {
+                gap: 2px;
+                padding: 10px;
             }
-            
+
+            .weekday {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+
+            .calendar-day {
+                height: 80px;
+                padding: 5px;
+                font-size: 0.9rem;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .day-number {
+                font-size: 0.9rem;
+                margin-bottom: 4px;
+                flex-shrink: 0;
+            }
+
+            .calendar-event {
+                padding: 4px 6px;
+                font-size: 0.75rem;
+                margin: 2px 0;
+                flex-shrink: 0;
+            }
+
+            .calendar-header {
+                padding: 15px;
+                margin-bottom: 10px;
+            }
+
+            .calendar-header h3 {
+                font-size: 1.4rem;
+            }
+
+            .month-nav {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 50px auto;
+            transition: all 0.8s ease;  /* Added transition */
+            opacity: 1;                 /* Added opacity */
+            transform: translateY(0);   /* Added transform */
+        }
+
+        @media only screen and (max-width: 768px) {
+            .main-navigation {
+                flex-direction: row !important;
+                gap: 5px !important;
+                margin: 0 0 20px 0 !important;  /* Adjusted for mobile */
+                padding: 0 5px !important;
+                justify-content: center !important;
+                flex-wrap: nowrap !important;
+                width: 100% !important;
+            }
+
             .subtitle {
-                font-size: 1rem;
-                padding: 0 15px;
+                font-size: 1rem !important;
+                margin: 0 auto 30px auto !important;  /* Adjusted for mobile */
+                padding: 0 15px !important;
+                max-width: 280px !important;
+                transition: all 0.8s ease !important;  /* Added transition */
+            }
+
+            .subtitle.slide-up {
+            
+                transform: translateY(-100px) !important;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            /* ... existing mobile styles ... */
+
+            #competitions, #seminars, #projects {
+                transition: all 0.8s ease !important;
+                transform: translateY(0) !important;
+            }
+
+            #competitions.slide-up, 
+            #seminars.slide-up, 
+            #projects.slide-up {
+                transform: translateY(-20px) !important;
             }
         }
     </style>
 </head>
 <body>
     <div class="title-container">
-        <h1 class="main-title">Rebarbora</h1>
-        <p class="subtitle">
-            Rebarbora je platforma pro studenty střední a vysoké školy s plným přehledem všech olympiád, soutěží, seminářů a projektů. V budoucnu přidáme i stipendijní programy a workshopy.
-        </p>
+        <h1 class="main-title">REBARBORA</h1>
     </div>
-    
+
     <div class="main-navigation">
         <button class="main-nav-button" onclick="showSection('competitions')">Soutěže</button>
         <button class="main-nav-button" onclick="showSection('seminars')">Semináře</button>
         <button class="main-nav-button" onclick="showSection('projects')">Projekty</button>
     </div>
 
-    <button id="suggestionButton" class="suggestion-btn" onclick="showSuggestionModal()" style="display: none;">
-        Víte o něčem co nám tu chybí?
+    <div class="subtitle-container">
+        <p class="subtitle">
+            Rebarbora je platforma pro studenty střední a vysoké školy s plným přehledem všech olympiád, soutěží, seminářů a projektů. V budoucnu přidáme i stipendijní programy a workshopy.
+        </p>
+    </div>
+
+    <button id="suggestionButton" class="suggestion-btn" onclick="showSuggestionModal()">
+        </i> Máte nápad na vylepšení?
     </button>
 
     <!-- Competitions Section -->
@@ -1189,13 +1303,32 @@
 
         // Function to show/hide sections
         function showSection(sectionId) {
-            // Hide all sections
-            document.getElementById('competitions').style.display = 'none';
-            document.getElementById('seminars').style.display = 'none';
-            document.getElementById('projects').style.display = 'none';
+            // Add slide-up animation to all elements
+            document.querySelector('.main-navigation').classList.add('slide-up');
+            document.querySelector('.subtitle').classList.add('slide-up');
+            
+            // Hide all sections first and add slide-up to visible section
+            document.querySelectorAll('#competitions, #seminars, #projects').forEach(section => {
+                section.style.display = 'none';
+                if (section.id === sectionId) {
+                    section.classList.add('slide-up');
+                }
+            });
 
             // Show selected section
-            document.getElementById(sectionId).style.display = 'block';
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+            }
+
+            // Update subtitle text
+            setTimeout(() => {
+                updateSubtitle(sectionId);
+            }, 400);
+
+            // Update filters
+            updateSubjectFilter(sectionId);
+            renderItems(sectionId);
 
             // Update subtitle text immediately before animations
             const subtitle = document.querySelector('.subtitle');
@@ -1373,7 +1506,7 @@
                             `<p class="card-date"><i class="far fa-calendar-alt"></i> ${competition.firstDateName}: ${competition.firstDate}</p>` : ''}
                         ${competition.Location ? `<p class="card-location"><i class="fas fa-map-marker-alt"></i> ${competition.Location}</p>` : ''}
                         ${competition.yearBornMin && competition.yearBornMax ? 
-                            `<p class="card-year"><i class="fas fa-birthday-cake"></i> Ročník: ${competition.yearBornMin} až ${competition.yearBornMax}</p>` : ''}
+                            `<p class="card-year"><i class="fas fa-birthday-cake"></i> Ročn��k: ${competition.yearBornMin} až ${competition.yearBornMax}</p>` : ''}
                         ${competition.classMin && competition.classMax ? 
                             `<p class="card-class"><i class="fas fa-school"></i> Třída: ${competition.classMin}. až ${competition.classMax}. třída</p>` : ''}
                     </div>
@@ -1513,7 +1646,7 @@
                 ${item.Link || item.Kontakt ? `
                     <a href="${item.Link || item.Kontakt}" target="_blank" class="modal-link">
                         <i class="fas fa-external-link-alt"></i>
-                        Více informací
+                        Více informac��
                     </a>
                 ` : ''}
             `;
@@ -1668,7 +1801,7 @@
                 <div class="calendar-grid">
                     <div class="weekday">Ne</div>
                     <div class="weekday">Po</div>
-                    <div class="weekday">Út</div>
+                    <div class="weekday">t</div>
                     <div class="weekday">St</div>
                     <div class="weekday">Čt</div>
                     <div class="weekday">Pá</div>
@@ -1946,12 +2079,6 @@
                 seminars: 'Zde najdete plný přehled všemožných seminářů. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).',
                 projects: 'Zde najdete plný přehled všemožných projektů. Můžete podle filtrů najít ty, ve kterých vyniknete. Poté se stačí jen přihlásit ;).'
             };
-
-            subtitle.style.opacity = '0';
-            setTimeout(() => {
-                subtitle.textContent = subtitleText[section];
-                subtitle.style.opacity = '1';
-            }, 400);
         }
     </script>
 </body>
