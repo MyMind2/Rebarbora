@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail View</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome for icons -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif; /* Change to your preferred font */
+            background-color: #F9F7F5; /* Set background color */
+        }
+        header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 10px; 
+            background-color: #FFFFFF; /* Set header background color */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow to the bottom of the header */
+        }
+        main {
+            background-color: #FFFFFF; /* Set block color */
+            padding: 20px; /* Optional: Add padding for better spacing */
+            border-radius: 8px; /* Optional: Add rounded corners */
+            max-width: 1100px; /* Set maximum width for the block to 1100px */
+            margin: 40px auto; /* Increased top margin for the block */
+            box-shadow: none; /* Remove shadow from the block */
+        }
+        #detail-info p {
+            margin-bottom: 20px; /* Increase space between information */
+            font-size: 18px; /* Increase text size for detail information */
+        }
+    </style>
+</head>
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 25px; background-color: #FFFFFF; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); position: fixed; width: 100%; top: 0; z-index: 1000;">
+        <div style="display: flex; align-items: center;">
+            <h1 style="margin: 0;align-items: center; color: #333333; cursor: pointer; font-size: 36px;" onclick="window.location.href='title.html';">REBARBORA</h1>
+            <button onclick="goBack()" style="margin-left: 20px; margin-top: 0px; align-items: center; font-size: 20px; background-color: #333333; padding: 10px 15px; height: 40px;">Zpět</button>
+        </div>
+        <a href="index.html" style="margin-right: 40px; text-decoration: none; color: #333333; font-size: 20px;">SOUTĚŽE</a>
+    </header>
+    <main style="padding: 80px 40px;">
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <h2 id="detail-title" style="margin-right: 20px; font-size: 36px;"></h2>
+            <img id="logo" alt="Competition Logo" style="max-width: 100px; height: auto;">
+        </div>
+        <p class="updated-date">Aktualizováno <span id="update-date"></span></p>
+        <div id="detail-description" style="margin: 20px 0;">
+        </div>
+        <div id="detail-info" style="margin: 20px 0;">
+        </div>
+    </main>
+
+    <script>
+        // Function to go back to the previous page
+        function goBack() {
+            window.history.back();
+        }
+
+        // Function to retrieve and display data
+        function displayDetails() {
+            const params = new URLSearchParams(window.location.search);
+            const itemData = JSON.parse(decodeURIComponent(params.get('item')));
+
+            document.getElementById('detail-title').textContent = itemData.title || 'No Title';
+            document.getElementById('update-date').textContent = new Date(itemData.datum).toLocaleDateString('cs-CZ') || 'N/A';
+            document.getElementById('detail-description').style.fontSize = '18px';
+            document.getElementById('detail-description').style.marginBottom = '20px';
+            document.getElementById('detail-description').textContent = itemData.longDescription || 'No Description';
+
+            // Display additional information
+            const detailInfo = document.getElementById('detail-info');
+            detailInfo.innerHTML = ''; // Clear previous content
+
+            // Create an array of fields to display in the specified order
+            const fields = [
+                { label: 'Link', value: itemData.Link, isButton: true, buttonText: 'Webovky olympiády' },
+                { label: 'Pro koho', value: itemData.yearBornMin + (itemData.yearBornMax ? ` až ${itemData.yearBornMax}` : '') + (itemData.yearBornMin ? ` ročník` : '')},
+                { label: 'Pro koho', value: itemData.classMin + (itemData.classMax ? `. až ${itemData.classMax}` : '') + (itemData.classMin ? `. třída` : '')},
+                { label: 'Platba', value: itemData.Platba },
+                { label: 'Lokace', value: itemData.exactLocation},
+                { label: itemData.jak_se_prihlasit_nazev, value: itemData.jak_se_prihlasit },
+                { label: 'Přihlášení', value: itemData.prihlaseni_link, isButton: true, buttonText: 'Přihlášení' },
+                
+                { label: 'Důležitá data:', value: true, isHeader: true},
+                { label: 'Registrace do', value: itemData.Registrace_do, isDate: true},
+                { label: itemData.firstDateName, value: itemData.firstDateFrom + (itemData.firstDateTo ? ` až ${itemData.firstDateTo}` : ''), isDate: true },
+                { label: itemData.secondDateName, value: itemData.secondDateFrom + (itemData.secondDateTo ? ` až ${itemData.secondDateTo}` : ''), isDate: true },
+                { label: itemData.thirdDateName, value: itemData.thirdDateFrom + (itemData.thirdDateTo ? ` až ${itemData.thirdDateTo}` : ''), isDate: true },
+                { label: itemData.fourthDateName, value: itemData.fourthDateFrom + (itemData.fourthDateTo ? ` až ${itemData.fourthDateTo}` : ''), isDate: true },
+                { label: itemData.fifthDateName, value: itemData.fifthDateFrom + (itemData.fifthDateTo ? ` až ${itemData.fifthDateTo}` : ''), isDate: true },
+
+                { label: itemData.NazevVysvetleni, value: itemData.Vysvetleni},
+                { label: 'Link', value: itemData.příklad_úlovy, isButton: true, buttonText: itemData.Příklad_úlohy_nazev },
+                { label: 'Jak se připravit', value: itemData.Priprava},
+                { label: 'Průběh soutěže', value: itemData.prubeh_souteze},
+                { label: 'Výhra', value: itemData.Cena },
+                { label: 'Link', value: itemData.Link, isButton: true, buttonText: 'Webovky olympiády' },
+                { label: 'email', value: itemData.email },
+                { label: 'telefon', value: itemData.telefon }
+            ];
+
+            // Loop through the fields and display them if they exist
+            fields.forEach(field => {
+                if (field.value) {
+                    const p = document.createElement('p');
+                    // Check if the field is a header
+                    if (field.isHeader) {
+                        p.innerHTML = `<strong style="font-size: 38px; color: black;">${field.label}`; // Set label size to 32px and color to black
+                        p.style.margin = '40px 0 20px 0'; // Adjust margin to move button to the left
+                        detailInfo.appendChild(p);
+                    } else if (field.isButton) {
+                        const button = document.createElement('button');
+                        button.textContent = field.buttonText; // Use custom button text if provided
+                        button.onclick = () => window.open(field.value, '_blank'); // Open link in a new tab
+                        button.style.fontSize = '24px'; // Increase button font size
+                        button.style.padding = '15px 20px'; // Increase button padding for a larger button
+                        button.style.cursor = 'pointer'; // Change cursor to pointer
+                        button.style.backgroundColor = '#333333'; // Set button background color to #333333
+                        button.style.color = 'white'; // Set button text color to white
+                        button.style.border = 'none'; // Remove button border
+                        button.style.borderRadius = '5px'; // Add rounded corners
+                        button.style.margin = '30px 0 30px 0'; // Adjust margin to move button to the left
+                        button.style.display = 'block'; // Make the button a block element for centering
+                        detailInfo.appendChild(button);
+                    } else if (field.isDate) {
+                        p.innerHTML = `<strong style="font-size: 20px; color: black;">${field.label}:\t</strong>${field.value}`;
+                        p.style.margin = '0px 0 20px 0';
+                        detailInfo.appendChild(p);
+                    } else {
+                        p.innerHTML = `<strong style="font-size: 32px; color: black;">${field.label}</strong><br><br>${field.value}`; // Set label size to 32px and color to black
+                        detailInfo.appendChild(p);
+                    }
+                }
+            });
+
+            // Set the logo image source
+            const logoElement = document.getElementById('logo');
+            logoElement.src = itemData.logoURL || 'default-logo.png'; // Use a default image if logoURL is not available
+        }
+
+        // Call the display function on page load
+        window.onload = displayDetails;
+    </script>
+</body>
+</html>
