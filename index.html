@@ -870,9 +870,32 @@
         // Filter functions
         function filterCompetitions() {
             const selectedSubject = document.getElementById('subjectFilter').value;
+            const today = new Date(); // Get today's date
+            today.setHours(0, 0, 0, 0); // Set time to the start of the day for accurate comparison
+
             const filteredCompetitions = selectedSubject === 'all' 
-                ? window.allCompetitions 
-                : window.allCompetitions.filter(comp => comp.subject === selectedSubject);
+                ? window.allCompetitions.filter(comp => {
+                    const registrationDate = new Date(comp.Registrace_do.split('.').reverse().join('-')); // Convert to Date object
+                    const firstDate = new Date(comp.firstDateFrom.split('.').reverse().join('-')); // Convert to Date object
+                    
+                    // Log dates for debugging
+                    console.log(`Registration Date: ${registrationDate}, First Date: ${firstDate}, Today: ${today}`);
+
+                    // Check if both dates are not in the past
+                    return registrationDate >= today && firstDate >= today; 
+                })
+                : window.allCompetitions.filter(comp => {
+                    const registrationDate = new Date(comp.Registrace_do.split('.').reverse().join('-'));
+                    const firstDate = new Date(comp.firstDateFrom.split('.').reverse().join('-'));
+                    
+                    // Log dates for debugging
+                    console.log(`Registration Date: ${registrationDate}, First Date: ${firstDate}, Today: ${today}`);
+
+                    // Check if the subject matches and both dates are not in the past
+                    return comp.subject === selectedSubject && registrationDate >= today && firstDate >= today;
+                });
+
+            // Update the display with filtered competitions
             displayCompetitions(filteredCompetitions);
         }
 
@@ -1328,6 +1351,7 @@
         // Call showSection on page load to set the default state
         document.addEventListener('DOMContentLoaded', function() {
             showSection('competitions'); // Set default section to competitions
+            toggleView('competitions', 'grid'); // Automatically select the "Seznam" view
         });
     </script>
 </body>
