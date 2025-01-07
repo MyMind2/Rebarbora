@@ -775,8 +775,10 @@
         <div class="modal-content">
             <span class="close-suggestion" id="closeSuggestionBtn">&times;</span>
             <h2>Máte nápad na vylepšení?</h2>
-            <p class="email-text">Napište nám na:</p>
-            <a href="mailto:matejjotrejtnar@gmail.com" class="email-link">matejjotrejtnar@gmail.com</a>
+            <form id="suggestionForm">
+                <textarea id="suggestionText" placeholder="Napište svůj návrh zde..." rows="4" required></textarea>
+                <button type="submit" class="submit-suggestion">Odeslat návrh</button>
+            </form>
         </div>
     </div>
 
@@ -1352,6 +1354,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             showSection('competitions'); // Set default section to competitions
             toggleView('competitions', 'grid'); // Automatically select the "Seznam" view
+        });
+
+        // Add this event listener for form submission
+        document.getElementById('suggestionForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const suggestion = document.getElementById('suggestionText').value;
+            console.log('Suggestion submitted:', suggestion);
+            // Here you can add code to send the suggestion to your server or handle it as needed
+            closeSuggestionModal(); // Close the modal after submission
         });
     </script>
 </body>

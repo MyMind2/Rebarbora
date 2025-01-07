@@ -7,10 +7,19 @@
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome for icons -->
     <style>
-        body {
-            font-family: 'Arial', sans-serif; /* Change to your preferred font */
-            background-color: #F9F7F5; /* Set background color */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        body {
+            background-color: #F9F7F5;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
         header {
             display: flex; 
             justify-content: space-between; 
@@ -128,12 +137,11 @@
     </style>
 </head>
 <body>
-    <header style="display: flex; justify-content: space-between; align-items: center; padding: 25px; background-color: #FFFFFF; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); position: fixed; width: 100%; top: 0; z-index: 1000;">
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #FFFFFF; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); position: fixed; width: 100%; top: 0; z-index: 1000;">
         <div style="display: flex; align-items: center;">
-            <h1 style="margin: 0;align-items: center; color: #333333; cursor: pointer; font-size: 36px;" onclick="window.location.href='title.html';">REBARBORA</h1>
-            <button onclick="goBack()" style="margin-left: 20px; margin-top: 0px; align-items: center; font-size: 20px; background-color: #333333; padding: 10px 15px; height: 40px;">Zpět</button>
+            <h1 style="margin: 0; align-items: center; color: #333333; cursor: pointer; font-size: 36px; font-family: 'Arial', sans-serif;" onclick="window.location.href='title.html';">REBARBORA</h1>
         </div>
-        <a href="index.html" style="margin-right: 40px; text-decoration: none; color: #333333; font-size: 20px;">SOUTĚŽE</a>
+        <button id="suggestionButton" class="suggestion-btn" onclick="showSuggestionModal()" style="margin-left: auto;">Přidat návrh</button>
     </header>
     <main style="padding: 80px 40px;">
         <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
@@ -150,6 +158,44 @@
     
 
     <script>
+        // Add these global variables at the start of your JavaScript
+        window.allCompetitions = [];
+        window.currentDate = new Date();
+
+        // Function to show/hide sections
+        function showSection(sectionId) {
+            // Hide all sections first
+            document.querySelectorAll('#competitions').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block'; // Show the section without animation
+            }
+
+            // Define buttons variable to select view toggle buttons
+            const buttons = document.querySelectorAll(`#${sectionId} .view-btn`);
+
+            // Set active button style
+            buttons.forEach(button => {
+                button.classList.remove('active'); // Remove active class from all buttons
+                button.style.padding = '45px 90px'; // Set default padding
+                button.style.fontSize = '2.2rem'; // Set default font size
+            });
+
+            // Show suggestion button
+            const suggestionBtn = document.getElementById('suggestionButton');
+            if (suggestionBtn) {
+                suggestionBtn.style.display = 'block';
+                suggestionBtn.classList.add('show'); // Ensure suggestion button is shown
+            }
+
+            // Render items for the selected section
+            renderItems(sectionId);
+        }
+
         // Function to go back to the previous page
         function goBack() {
             window.history.back();
